@@ -210,7 +210,8 @@ export function Sidebar({
           <IconQuiz />
           Create quiz
         </button>
-
+           
+           <div className="sidebar-navigation">
         <nav className="sidebar-recents" aria-label="Recent conversations">
           <p className="sidebar-label sidebar-label-with-icon">
             <IconHistory />
@@ -364,6 +365,7 @@ export function Sidebar({
             );
           })}
         </details>
+        </div>
 
         <div className="sidebar-section">
           <p className="sidebar-label" id="level-label">

@@ -759,25 +759,31 @@ export default function App({
                 <div className="thread-inner">
                   {messages.length === 0 ? (
                     <div className="welcome">
-                      <div className="welcome-icon" aria-hidden="true">
-                        <img
-                          className="welcome-robot"
-                          src={algotutorRobot}
-                          alt=""
-                          aria-hidden="true"
-                        />
-                      </div>
+                      
                       <h1 className="welcome-title">
                         What would you like to learn today?
                       </h1>
                       <p className="welcome-sub">
-                        Ask a question in your own words — no topic selection
-                        needed. I can explain concepts, prove theorems, run
+                        Ask a question in your own words — no topic selection needed. I can explain concepts, prove theorems, run
                         verified algorithms step by step, and draw graphs.
                         {provider.enabled
                           ? " Responses are AI-generated."
                           : " Responses come from curated, offline lessons."}
                       </p>
+
+                      <div className="welcome-composer">
+                        <Composer
+                          onSend={(text) => {
+                            setDraft(null);
+                            void send(text);
+                          }}
+                          onStop={stop}
+                          streaming={Boolean(streamingId)}
+                          draft={draft}
+                          hintId="composer-hint"
+                          placeholder="Ask anything — e.g. 'run a Max-Cut demo' or 'explain the formal proof'"
+                        />
+                      </div>
                       {/* Six real request paths, each sending the message it names.
                     They are starters, not a catalogue: every one of them routes
                     through the same send path as typing the question yourself. */}
@@ -813,29 +819,7 @@ export default function App({
                           ),
                         )}
                       </div>
-                      {conversations.length > 0 && (
-                        <p className="welcome-note">
-                          Your recent conversations are kept in this browser
-                          only — open one from the menu.
-                        </p>
-                      )}
-                      {/* Second entry point to the quiz. On a phone the sidebar is a
-                    drawer, so without this a student would have to open the
-                    menu to find the feature at all. */}
-                      <div className="welcome-quiz">
-                        <button
-                          type="button"
-                          className="btn btn-secondary"
-                          onClick={openQuizSetup}
-                        >
-                          <IconQuiz />
-                          Create a quiz
-                        </button>
-                        <p className="welcome-quiz-hint">
-                          Ten to fifty questions across every topic, graded when
-                          you submit — and printable as a paper worksheet.
-                        </p>
-                      </div>
+                      
                     </div>
                   ) : (
                     <ChatThread
@@ -863,14 +847,19 @@ export default function App({
                 </button>
               )}
             </div>
-            <Composer
-              onSend={(text) => void send(text)}
-              onStop={stop}
-              streaming={Boolean(streamingId)}
-              draft={draft}
-              hintId="composer-hint"
-              placeholder="Ask anything — e.g. 'run a Max-Cut demo' or 'explain the formal proof'"
-            />
+            {messages.length > 0 && (
+              <Composer
+                onSend={(text) => {
+                  setDraft(null);
+                  void send(text);
+                }}
+                onStop={stop}
+                streaming={Boolean(streamingId)}
+                draft={draft}
+                hintId="composer-hint"
+                placeholder="Ask anything — e.g. 'run a Max-Cut demo' or 'explain the formal proof'"
+              />
+            )}
           </>
         )}
       </div>

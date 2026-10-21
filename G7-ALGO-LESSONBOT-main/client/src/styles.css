@@ -2422,3 +2422,459 @@ body {
   object-fit: contain;
 }
 
+/* ==========================================
+   ALGOTUTOR CHAT — LAYOUT REFINEMENTS
+   ========================================== */
+
+/* 1. Wider desktop sidebar and main content */
+:root {
+  --sidebar-w: clamp(320px, 22vw, 356px);
+  --content-max: 58rem;
+}
+
+/* Let the main chat use more of the available width */
+.thread-inner {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 26px clamp(20px, 2.5vw, 42px) 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Keep the welcome content at the top rather than vertically centered */
+.welcome {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+/* Keep the welcome heading and description grouped together */
+.welcome-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Wider heading, sensible paragraph length */
+.welcome-title {
+  max-width: 100%;
+  margin: 0 0 12px;
+  font-size: clamp(29px, 2.5vw, 38px);
+  line-height: 1.18;
+  letter-spacing: -0.035em;
+}
+
+.welcome-sub {
+  max-width: 70ch;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* Keep active chat messages readable inside the wider canvas */
+.chat-thread {
+  width: 100%;
+  max-width: none;
+}
+
+.message-content {
+  max-width: 86ch;
+}
+
+/* Welcome logo: clean, properly spaced, and aligned to the top */
+.welcome-robot {
+  display: block;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  object-position: left center;
+  align-self: flex-start;
+
+  margin: 0 0 12px;
+  padding: 0;
+
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* ==========================================
+   WELCOME COMPOSER AND SUGGESTED PROMPTS
+   ========================================== */
+
+/* Message input sits between the introduction and prompt shortcuts */
+.welcome-composer {
+  width: min(100%, 58rem);
+  margin: 26px auto 0;
+}
+
+.welcome-composer .composer {
+  position: static;
+  width: 100%;
+  flex-shrink: 0;
+
+  padding: 0;
+  margin: 0;
+
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.welcome-composer .composer-inner {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.welcome-composer .composer-row {
+  min-height: 62px;
+  padding: 8px 8px 8px 18px;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.welcome-composer .composer-input {
+  font-size: 16px;
+}
+
+.welcome-composer .composer-hint {
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* Suggested prompts come AFTER the message input */
+.starter-chips {
+  width: min(100%, 66rem);
+  max-width: 100%;
+  margin: 24px auto 0;
+  gap: 12px;
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.starter-chip {
+  min-width: 0;
+  min-height: 66px;
+  padding: 13px 16px;
+  border-radius: 14px;
+  background: #fff;
+}
+
+/* Subtle hover rather than a strong yellow fill */
+.starter-chip:hover {
+  background: #fffdf5;
+  border-color: var(--accent-line);
+  box-shadow: var(--shadow-1);
+}
+
+.starter-chip-icon {
+  flex-shrink: 0;
+  border-radius: 9px;
+}
+
+/* Keep supporting information underneath the suggestions */
+.welcome-note {
+  width: 100%;
+  margin: 18px auto 0;
+  text-align: center;
+}
+
+.welcome-quiz {
+  margin-top: 22px;
+}
+
+/* On narrow phones, use a single column */
+@media (max-width: 559.98px) {
+  .thread-inner {
+    padding: 20px 16px 30px;
+  }
+
+  .welcome-robot {
+    width: 66px;
+    height: 66px;
+    margin-bottom: 10px;
+  }
+
+  .welcome-title {
+    font-size: 27px;
+  }
+
+  .welcome-composer {
+    margin-top: 20px;
+  }
+
+  .starter-chips {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: 18px;
+  }
+}
+
+/* ==========================================
+   SUBTLE SIDEBAR ACTIONS
+   ========================================== */
+
+.sidebar-newchat {
+  min-height: 44px;
+  width: 100%;
+
+  color: #29271e;
+  background: #fff1b8;
+  border: 1px solid #f0dc93;
+  border-radius: 10px;
+
+  box-shadow: none;
+  font-weight: 600;
+}
+
+.sidebar-newchat:hover {
+  color: #29271e;
+  background: #ffe99b;
+  border-color: #e8ce69;
+  box-shadow: none;
+}
+
+.sidebar-quiz {
+  min-height: 42px;
+  width: 100%;
+
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+
+  box-shadow: none;
+  font-weight: 550;
+}
+
+.sidebar-quiz:hover {
+  color: var(--text);
+  background: #f0eee5;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* ==========================================
+   SIDEBAR NAVIGATION AND HISTORY
+   ========================================== */
+
+.sidebar {
+  gap: 9px;
+  padding: 14px;
+}
+
+/* One scrollable middle area */
+.sidebar-navigation {
+  flex: 1 1 auto;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+
+  padding-right: 3px;
+  scrollbar-gutter: stable;
+}
+
+/* Recent conversations should fit their contents */
+.sidebar-recents {
+  flex: 0 0 auto;
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+  margin-top: 2px;
+}
+
+.sidebar-recents > .sidebar-label {
+  margin: 4px 0 8px;
+}
+
+/* More compact list spacing */
+.recents-list {
+  gap: 3px;
+}
+
+.recents-item {
+  gap: 2px;
+  padding: 0;
+}
+
+.recents-open {
+  padding: 6px 7px;
+  gap: 2px;
+  min-height: 0;
+}
+
+.recents-title {
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.recents-meta {
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.recents-actions {
+  gap: 0;
+  padding-right: 2px;
+}
+
+@media (min-width: 1024px) {
+  .btn-icon-mini {
+    min-width: 32px;
+    min-height: 32px;
+    padding: 5px;
+  }
+}
+
+/* Topic Catalog follows the history instead of sticking to the bottom */
+.sidebar-topics-details {
+  flex: 0 0 auto;
+  min-height: 0;
+  max-height: none;
+  margin-top: 0;
+  padding-top: 12px;
+  overflow: visible;
+  border-top: 1px solid var(--border);
+}
+
+.sidebar-topics-details > summary {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 5px 3px;
+  border-radius: 8px;
+}
+
+.sidebar-topics-details > summary:hover {
+  background: #f0eee5;
+}
+
+.sidebar-topics-details > .sidebar-note {
+  margin: 6px 2px 9px;
+  line-height: 1.45;
+}
+
+/* Topic names need comfortable vertical rhythm */
+.sidebar-topic {
+  min-height: 38px;
+  padding: 8px 10px;
+  line-height: 1.35;
+  border-radius: 9px;
+}
+
+.sidebar-topic-active {
+  background: var(--accent-soft);
+  color: var(--text);
+  font-weight: 650;
+  box-shadow: inset 3px 0 0 var(--accent-line);
+}
+
+/* Footer and learning-level controls stay fixed at the bottom */
+.sidebar-section,
+.sidebar-footer {
+  flex-shrink: 0;
+}
+
+.sidebar-footer {
+  padding-top: 10px;
+}
+
+
+/* ==========================================
+   CHATGPT-STYLE CONTENT WIDTH AND MARGINS
+   ========================================== */
+
+:root {
+  /* Narrower centered reading column */
+  --content-max: 58rem;
+}
+
+/* Main conversation and welcome content */
+.thread-inner {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+
+  /* Balanced space on both sides */
+  padding: 28px clamp(24px, 3vw, 40px) 40px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+/* Keep the welcome section inside the centered column */
+.welcome {
+  width: 100%;
+  max-width: none;
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+/* Align the welcome input with the content */
+.welcome-composer {
+  width: 100%;
+  max-width: 54rem;
+  margin: 26px auto 0;
+}
+
+/* Keep suggested prompts within the same visual column */
+.starter-chips {
+  width: 100%;
+  max-width: 58rem;
+  margin-inline: auto;
+}
+
+/* Active conversation messages */
+.chat-thread {
+  width: 100%;
+  max-width: none;
+}
+
+/* Match the fixed bottom composer to the same centered width */
+.composer-inner {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+/* Slightly smaller margins on tablets and phones */
+@media (max-width: 768px) {
+  .thread-inner {
+    padding: 22px 20px 32px;
+  }
+
+  .welcome-composer {
+    max-width: 100%;
+  }
+
+  .starter-chips {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .thread-inner {
+    padding: 18px 16px 28px;
+  }
+}
