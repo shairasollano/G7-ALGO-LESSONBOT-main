@@ -11,25 +11,32 @@
    ============================================================================= */
 
 .lp {
-  /* Neutrals — warm off-white rather than pure #fff. */
-  --lp-paper: #fbfbf9;
-  --lp-paper-2: #f4f4f0;
-  --lp-ink: #14161b;
-  --lp-ink-2: #454b57;
-  --lp-ink-3: #5f6673;
-  --lp-line: #e3e2dc;
-  --lp-line-2: #cfcec6;
+  /* Brand palette */
+  --lp-paper: #ffffff;
+  --lp-paper-2: #f9f8f4;
 
-  /* One accent: the product's identity colour, deepened for contrast on paper. */
-  --lp-accent: #4338ca;
-  --lp-accent-hover: #3730a3;
-  --lp-accent-soft: #ecebfa;
-  --lp-accent-line: #c9c4f4;
-  --lp-focus: #4338ca;
+  /* Typography */
+  --lp-ink: #1a1a19;
+  --lp-ink-2: #454540;
+  --lp-ink-3: #707069;
 
-  /* Algorithm-state semantics, aligned with the chat's graph legend. */
-  --lp-node-fill: #eef0f4;
+  /* Borders */
+  --lp-line: #dfdfd9;
+  --lp-line-2: #c9c9c2;
+
+  /* Yellow brand accents */
+  --lp-accent: #f9be08;
+  --lp-accent-hover: #efd30b;
+  --lp-accent-soft: #fff7d6;
+  --lp-accent-line: #e4bb35;
+
+  /* Accessible keyboard focus */
+  --lp-focus: #8a6100;
+
+  /* Algorithm visualization states */
+  --lp-node-fill: #f9f8f4;
   --lp-node-stroke: #6b7280;
+
   --lp-active: #1d4ed8;
   --lp-active-fill: #dbeafe;
   --lp-selected: #15803d;
@@ -38,32 +45,49 @@
   --lp-uncovered-fill: #fee2e2;
   --lp-cut: #b45309;
   --lp-cut-fill: #fef3c7;
-  --lp-side-a: #4338ca;
-  --lp-side-a-fill: #e0e7ff;
-  --lp-side-b: #be185d;
-  --lp-side-b-fill: #fce7f3;
 
-  --lp-display: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
+  --lp-side-a: #b88600;
+  --lp-side-a-fill: #fff2b8;
+  --lp-side-b: #454540;
+  --lp-side-b-fill: #dfdfd9;
+
+  /* Clean sans-serif typography */
+  --lp-display: Inter, ui-sans-serif, system-ui,
+    -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
   --lp-ease: cubic-bezier(0.2, 0, 0, 1);
 
-  /* Corner radii, one scale for every surface on the page. */
+  /* Rounded corners */
   --lp-radius-sm: 8px;
   --lp-radius-md: 12px;
-  --lp-radius-lg: 14px;
-  --lp-radius-xl: 18px;
+  --lp-radius-lg: 16px;
+  --lp-radius-xl: 20px;
 
-  /* Layered elevation. `1` is a contact shadow, `2` adds a soft ambient
-     shadow, `3` is for overlays; the accent variant lifts primary actions. */
-  --lp-shadow-1: 0 1px 2px rgba(20, 22, 27, 0.06);
-  --lp-shadow-2: 0 1px 2px rgba(20, 22, 27, 0.05), 0 12px 28px -14px rgba(20, 22, 27, 0.2);
-  --lp-shadow-3: 0 2px 6px rgba(20, 22, 27, 0.08), 0 32px 64px -28px rgba(20, 22, 27, 0.35);
-  --lp-shadow-accent: 0 1px 2px rgba(23, 20, 60, 0.4), 0 8px 20px -8px rgba(67, 56, 202, 0.55);
-  --lp-shadow-accent-hover: 0 2px 4px rgba(23, 20, 60, 0.4), 0 14px 30px -10px rgba(67, 56, 202, 0.6);
-  --lp-shadow-accent-press: 0 1px 2px rgba(23, 20, 60, 0.45);
-  /* Inner surfaces: a top-edge highlight and a shallow inset for canvases. */
-  --lp-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.75);
-  --lp-shadow-inset: inset 0 1px 2px rgba(20, 22, 27, 0.05), inset 0 0 0 1px rgba(20, 22, 27, 0.02);
+  /* Subtle shadows */
+  --lp-shadow-1: 0 1px 3px rgba(26, 26, 25, 0.05);
 
+  --lp-shadow-2:
+    0 8px 24px rgba(26, 26, 25, 0.06);
+
+  --lp-shadow-3:
+    0 20px 48px rgba(26, 26, 25, 0.1);
+
+  --lp-shadow-accent:
+    0 4px 12px rgba(249, 190, 8, 0.18);
+
+  --lp-shadow-accent-hover:
+    0 6px 18px rgba(249, 190, 8, 0.25);
+
+  --lp-shadow-accent-press:
+    0 1px 3px rgba(26, 26, 25, 0.1);
+
+  --lp-highlight:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+  --lp-shadow-inset:
+    inset 0 1px 2px rgba(26, 26, 25, 0.04);
+
+  /* Existing layout and page settings */
   background: var(--lp-paper);
   color: var(--lp-ink);
   font-size: 16px;
@@ -2074,4 +2098,224 @@ html:has(> body > #root > .lp) {
     transform: none;
     transition: none;
   }
+}
+
+/* OVERRIDE SECTION */
+
+/* AlgoTutor brand assets */
+.lp-brand {
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.lp-brand-robot {
+  display: block;
+  width: 32px;
+  height: 34px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.lp-brand-wordmark {
+  display: block;
+  width: 120px;
+  max-width: 32vw;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Minimal navigation */
+.lp-nav {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid var(--lp-line);
+  box-shadow: none;
+  backdrop-filter: blur(12px);
+}
+
+.lp-nav-inner {
+  max-width: 1240px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.lp-nav-links a {
+  border-radius: 999px;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.lp-nav-links a:hover {
+  color: var(--lp-ink);
+  background: var(--lp-paper-2);
+}
+
+.lp-nav-links a[aria-current="true"],
+.lp-drawer-links a[aria-current="true"] {
+  color: var(--lp-ink);
+  background: var(--lp-accent-soft);
+}
+
+/* Flat yellow primary buttons */
+.lp-btn-primary {
+  background: var(--lp-accent);
+  border-color: transparent;
+  color: var(--lp-ink);
+  box-shadow: var(--lp-shadow-1);
+}
+
+.lp-btn-primary::before,
+.lp-btn-primary::after {
+  display: none;
+}
+
+.lp-btn-primary:hover {
+  background: var(--lp-accent-hover);
+  border-color: transparent;
+  color: var(--lp-ink);
+  box-shadow: var(--lp-shadow-2);
+  transform: translateY(-1px);
+}
+
+.lp-btn-primary:active {
+  background: var(--lp-accent-hover);
+  box-shadow: var(--lp-shadow-1);
+  transform: translateY(0);
+}
+
+.lp-btn-primary:disabled,
+.lp-btn-primary[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Topic shortcuts */
+.lp-chip:hover {
+  border-color: var(--lp-accent-line);
+  color: var(--lp-ink);
+  background: var(--lp-accent-soft);
+  box-shadow: var(--lp-shadow-1);
+  transform: translateY(-1px);
+}
+
+/* Demo controls */
+.lp-demo-frame .btn:hover:not(:disabled) {
+  background: var(--lp-accent-soft);
+  border-color: var(--lp-accent-line);
+  color: var(--lp-ink);
+}
+
+/* Hero typography */
+.lp-hero-title {
+  font-family: var(--lp-display);
+  font-size: clamp(2.4rem, 4.7vw, 4rem);
+  font-weight: 750;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  max-width: 15ch;
+  margin-bottom: 18px;
+}
+
+.lp-hero-lede {
+  font-family: var(--lp-display);
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  line-height: 1.75;
+  color: var(--lp-ink-2);
+  max-width: 54ch;
+}
+
+.lp-section-head h2,
+.lp-closing h2 {
+  font-family: var(--lp-display);
+  letter-spacing: -0.035em;
+}
+
+.lp-topic-title {
+  font-family: var(--lp-display);
+}
+
+/* Quiet yellow-and-neutral backdrop */
+.lp-main-glow {
+  background:
+    radial-gradient(
+      300px 420px at 2% 14%,
+      rgba(249, 190, 8, 0.07),
+      transparent 70%
+    ),
+    radial-gradient(
+      340px 460px at 98% 40%,
+      rgba(26, 26, 25, 0.025),
+      transparent 72%
+    ),
+    radial-gradient(
+      280px 400px at 1% 74%,
+      rgba(239, 211, 11, 0.06),
+      transparent 70%
+    );
+}
+
+.lp-main-dots {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(26, 26, 25, 0.07) 1px,
+    transparent 1.6px
+  );
+}
+
+/* Calm card styling */
+.lp-hero-ticker,
+.lp-demo-frame,
+.lp-topic-card {
+  background: var(--lp-paper);
+  border-color: var(--lp-line);
+  box-shadow: var(--lp-shadow-1);
+}
+
+.lp-topic-figure {
+  background: var(--lp-paper-2);
+  border-bottom-color: var(--lp-line);
+}
+
+.lp-topic-card:hover,
+.lp-topic-card:focus-within {
+  border-color: var(--lp-accent-line);
+  box-shadow: var(--lp-shadow-2);
+}
+
+/* Keep the closing section clean */
+.lp-closing {
+  border-top-color: var(--lp-line);
+}
+
+/* Warm-white footer */
+.lp-footer {
+  background: var(--lp-paper-2);
+  color: var(--lp-ink);
+  border-top: 1px solid var(--lp-line);
+}
+
+.lp-footer .lp-brand {
+  color: var(--lp-ink);
+}
+
+.lp-footer-note {
+  color: var(--lp-ink-2);
+}
+
+.lp-footer-links a {
+  color: var(--lp-ink-2);
+}
+
+.lp-footer-links a:hover {
+  color: var(--lp-ink);
+}
+
+.lp-footer-legal {
+  border-top-color: rgba(26, 26, 25, 0.14);
+  color: var(--lp-ink-3);
+}
+
+.lp-footer :focus-visible {
+  outline-color: var(--lp-focus);
 }

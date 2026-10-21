@@ -19,7 +19,14 @@ import { TraceBlock } from "../components/blocks/TraceBlock";
 import { chatHref, Link } from "../lib/router";
 import { AlgoScene } from "./AlgoScene";
 import { HeroBackdrop, HeroTicker, useHeroExample } from "./HeroExample";
-import { IconArrowDown, IconArrowRight, IconChat, IconClose, IconMenu, IconRestart } from "./icons";
+import {
+  IconArrowDown,
+  IconArrowRight,
+  IconChat,
+  IconClose,
+  IconMenu,
+  IconRestart,
+} from "./icons";
 import { MainBackdrop } from "./MainBackdrop";
 import { SceneThumb, sceneForTopic } from "./SceneThumb";
 import { TabStrip, tabIds } from "./TabStrip";
@@ -33,6 +40,8 @@ import {
 } from "./landing-copy";
 import { usePrefersReducedMotion } from "./use-motion";
 import "./landing.css";
+import algotutorRobot from "../assets/AlgoTutor-robot.png";
+import algotutorWordmark from "../assets/AlgoTutor-typography.png";
 
 type CatalogStatus = "loading" | "ready" | "error";
 
@@ -55,11 +64,14 @@ function useTopicCatalog() {
         if (cancelled) return;
         setTopics(response.topics);
         setStatus("ready");
-        const settled = await Promise.allSettled(response.topics.map((topic) => api.topic(topic.slug)));
+        const settled = await Promise.allSettled(
+          response.topics.map((topic) => api.topic(topic.slug)),
+        );
         if (cancelled) return;
         const next: Record<string, TopicDetail> = {};
         settled.forEach((result, index) => {
-          if (result.status === "fulfilled") next[response.topics[index].slug] = result.value.topic;
+          if (result.status === "fulfilled")
+            next[response.topics[index].slug] = result.value.topic;
         });
         setDetails(next);
       })
@@ -138,7 +150,9 @@ function useActiveSection(): string | null {
 function useSectionReveal(reducedMotion: boolean) {
   useEffect(() => {
     if (reducedMotion || typeof IntersectionObserver !== "function") return;
-    const targets = [...document.querySelectorAll<HTMLElement>(".lp-rail, .lp-section")];
+    const targets = [
+      ...document.querySelectorAll<HTMLElement>(".lp-rail, .lp-section"),
+    ];
     if (targets.length === 0) return;
 
     targets.forEach((el) => el.setAttribute("data-reveal", "pending"));
@@ -185,15 +199,27 @@ function Brand({ onActivate }: { onActivate?: () => void }) {
         // scroll behavior stays `auto`, which CSS resolves to smooth here and
         // to an immediate jump under prefers-reduced-motion.
         if (window.location.hash) {
-          window.history.replaceState(null, "", window.location.pathname + window.location.search);
+          window.history.replaceState(
+            null,
+            "",
+            window.location.pathname + window.location.search,
+          );
         }
         window.scrollTo({ top: 0, behavior: "auto" });
       }}
     >
-      <span className="lp-brand-mark" aria-hidden="true">
-        λ
-      </span>
-      <span className="lp-brand-name">G7 Algo</span>
+      <img
+        className="lp-brand-robot"
+        src={algotutorRobot}
+        alt=""
+        aria-hidden="true"
+      />
+
+      <img
+        className="lp-brand-wordmark"
+        src={algotutorWordmark}
+        alt="AlgoTutor"
+      />
     </a>
   );
 }
@@ -284,7 +310,13 @@ function Nav() {
       >
         <div className="lp-drawer-head">
           <span className="lp-drawer-title">Menu</span>
-          <button ref={closeRef} type="button" className="lp-icon-btn" onClick={close} aria-label="Close menu">
+          <button
+            ref={closeRef}
+            type="button"
+            className="lp-icon-btn"
+            onClick={close}
+            aria-label="Close menu"
+          >
             <IconClose />
           </button>
         </div>
@@ -300,7 +332,11 @@ function Nav() {
             </a>
           ))}
         </nav>
-        <Link className="lp-btn lp-btn-primary lp-btn-block" to="/chat" onClick={close}>
+        <Link
+          className="lp-btn lp-btn-primary lp-btn-block"
+          to="/chat"
+          onClick={close}
+        >
           <IconChat />
           Try the Chat
         </Link>
@@ -324,24 +360,31 @@ function Hero() {
       <HeroBackdrop step={example.step} paused={example.paused} />
       <div className="lp-hero-inner">
         <div className="lp-hero-copy">
-          <h1 className="lp-hero-title">Understand Algorithms. See Why They Work.</h1>
+          <h1 className="lp-hero-title">
+            Understand Algorithms. See Why They Work.
+          </h1>
           <p className="lp-hero-lede">
-            Explore polynomial reductions, complexity theory, approximation algorithms, and randomized algorithms
-            through clear explanations, interactive visualizations, and step-by-step examples.
+            Explore polynomial reductions, complexity theory, approximation
+            algorithms, and randomized algorithms through clear explanations,
+            interactive visualizations, and step-by-step examples.
           </p>
           <div className="lp-hero-actions">
             <Link className="lp-btn lp-btn-primary lp-btn-lg" to="/chat">
               <IconChat />
               Try the Chat
             </Link>
-            <a className="lp-btn lp-btn-secondary lp-btn-lg" href={`#${SECTION_IDS.topics}`}>
+            <a
+              className="lp-btn lp-btn-secondary lp-btn-lg"
+              href={`#${SECTION_IDS.topics}`}
+            >
               Explore the Topics
               <IconArrowDown />
             </a>
           </div>
           <p className="lp-hero-note">
-            Four deterministic solvers, three explanation depths, and no account. Computed results come from the app's
-            own code, not from a language model.
+            Four deterministic solvers, three explanation depths, and no
+            account. Computed results come from the app's own code, not from a
+            language model.
           </p>
           <HeroTicker
             step={example.step}
@@ -362,9 +405,9 @@ function Hero() {
 
 /** The curated subset near the hero; always a subset of the real catalog. */
 function TopicRail({ topics }: { topics: TopicSummary[] }) {
-  const featured = FEATURED_TOPIC_SLUGS.map((slug) => topics.find((topic) => topic.slug === slug)).filter(
-    (topic): topic is TopicSummary => Boolean(topic),
-  );
+  const featured = FEATURED_TOPIC_SLUGS.map((slug) =>
+    topics.find((topic) => topic.slug === slug),
+  ).filter((topic): topic is TopicSummary => Boolean(topic));
   if (featured.length === 0) return null;
 
   return (
@@ -377,7 +420,10 @@ function TopicRail({ topics }: { topics: TopicSummary[] }) {
           <li key={topic.slug}>
             <Link
               className="lp-chip"
-              to={chatHref({ ask: TOPIC_PROMPTS[topic.slug] ?? topic.title, topic: topic.slug })}
+              to={chatHref({
+                ask: TOPIC_PROMPTS[topic.slug] ?? topic.title,
+                topic: topic.slug,
+              })}
             >
               {topic.title}
             </Link>
@@ -385,8 +431,8 @@ function TopicRail({ topics }: { topics: TopicSummary[] }) {
         ))}
       </ul>
       <p className="lp-rail-note">
-        Opens the chat with that question ready to send. You can also ask about anything else — no topic needs to be
-        selected first.
+        Opens the chat with that question ready to send. You can also ask about
+        anything else — no topic needs to be selected first.
       </p>
     </section>
   );
@@ -404,12 +450,18 @@ function DemoSection() {
   const panelIds = tabIds(baseId, demo.id);
 
   return (
-    <section className="lp-section lp-demo" id="demo" aria-labelledby="lp-demo-title">
+    <section
+      className="lp-section lp-demo"
+      id="demo"
+      aria-labelledby="lp-demo-title"
+    >
       <div className="lp-section-head">
         <h2 id="lp-demo-title">See it work before you ask</h2>
         <p>
-          This is the chat's own trace block, running the deterministic solver on a curated example. Step through it
-          with Previous and Next: the graph, the explanation and the computed result all describe the same step.
+          This is the chat's own trace block, running the deterministic solver
+          on a curated example. Step through it with Previous and Next: the
+          graph, the explanation and the computed result all describe the same
+          step.
         </p>
       </div>
 
@@ -418,17 +470,26 @@ function DemoSection() {
         ariaLabel="Demonstration examples"
         activeIndex={index}
         onSelect={setIndex}
-        tabs={landingDemos.map((entry) => ({ id: entry.id, label: entry.label }))}
+        tabs={landingDemos.map((entry) => ({
+          id: entry.id,
+          label: entry.label,
+        }))}
       />
 
-      <div className="lp-demo-panel" role="tabpanel" id={panelIds.panel} aria-labelledby={panelIds.tab}>
+      <div
+        className="lp-demo-panel"
+        role="tabpanel"
+        id={panelIds.panel}
+        aria-labelledby={panelIds.tab}
+      >
         <p className="lp-demo-caption">{demo.caption}</p>
         <div className="lp-demo-frame">
           <TraceBlock trace={demo.trace} />
         </div>
         <p className="lp-demo-note">
-          Example: {demo.exampleTitle}. Solver: <code>{demo.solverId}</code>. Every value shown is computed by the app,
-          and the guarantee and complexity lines are produced by the solver.
+          Example: {demo.exampleTitle}. Solver: <code>{demo.solverId}</code>.
+          Every value shown is computed by the app, and the guarantee and
+          complexity lines are produced by the solver.
         </p>
       </div>
     </section>
@@ -436,7 +497,13 @@ function DemoSection() {
 }
 
 /** One topic card: catalog title and description, plus a starting question. */
-function TopicCard({ topic, detail }: { topic: TopicSummary; detail?: TopicDetail }) {
+function TopicCard({
+  topic,
+  detail,
+}: {
+  topic: TopicSummary;
+  detail?: TopicDetail;
+}) {
   const scene = sceneForTopic(topic.slug);
   const question = detail?.readinessQuestions?.[0];
   const prompt = TOPIC_PROMPTS[topic.slug] ?? topic.title;
@@ -448,11 +515,14 @@ function TopicCard({ topic, detail }: { topic: TopicSummary; detail?: TopicDetai
           <SceneThumb scene={scene} />
         ) : (
           <p className="lp-topic-nofigure">
-            {detail?.visualization?.description ?? "A written lesson with a worked example."}
+            {detail?.visualization?.description ??
+              "A written lesson with a worked example."}
           </p>
         )}
         {detail?.visualization?.description && scene && (
-          <p className="lp-topic-figcaption">{detail.visualization.description}</p>
+          <p className="lp-topic-figcaption">
+            {detail.visualization.description}
+          </p>
         )}
       </div>
       <div className="lp-topic-body">
@@ -460,10 +530,16 @@ function TopicCard({ topic, detail }: { topic: TopicSummary; detail?: TopicDetai
         <p className="lp-topic-desc">{topic.description}</p>
         {question && (
           <p className="lp-topic-question">
-            <span className="lp-topic-question-label">Question to start with:</span> {question}
+            <span className="lp-topic-question-label">
+              Question to start with:
+            </span>{" "}
+            {question}
           </p>
         )}
-        <Link className="lp-btn lp-btn-secondary lp-topic-action" to={chatHref({ ask: prompt, topic: topic.slug })}>
+        <Link
+          className="lp-btn lp-btn-secondary lp-topic-action"
+          to={chatHref({ ask: prompt, topic: topic.slug })}
+        >
           Ask about this
           <IconArrowRight />
         </Link>
@@ -509,11 +585,16 @@ function TopicGrid({
       {status === "error" && (
         <div className="lp-status lp-status-error" role="status">
           <p>
-            The topic catalog could not be loaded, so it is not shown rather than guessed at. The chat itself is
-            unaffected — you can ask about any topic directly.
+            The topic catalog could not be loaded, so it is not shown rather
+            than guessed at. The chat itself is unaffected — you can ask about
+            any topic directly.
           </p>
           <div className="lp-status-actions">
-            <button type="button" className="lp-btn lp-btn-secondary" onClick={onRetry}>
+            <button
+              type="button"
+              className="lp-btn lp-btn-secondary"
+              onClick={onRetry}
+            >
               <IconRestart />
               Retry
             </button>
@@ -527,14 +608,19 @@ function TopicGrid({
 
       {status === "ready" && topics.length === 0 && (
         <p className="lp-status" role="status">
-          The catalog returned no topics. Ask a question in the chat instead — topic selection is optional.
+          The catalog returned no topics. Ask a question in the chat instead —
+          topic selection is optional.
         </p>
       )}
 
       {topics.length > 0 && (
         <ul className="lp-topic-grid">
           {topics.map((topic) => (
-            <TopicCard key={topic.slug} topic={topic} detail={details[topic.slug]} />
+            <TopicCard
+              key={topic.slug}
+              topic={topic}
+              detail={details[topic.slug]}
+            />
           ))}
         </ul>
       )}
@@ -570,13 +656,15 @@ function HowItWorks() {
       </ol>
       <p className="lp-how-note">
         <span>
-          Every computed value in this app — traces, graph states, tableau counts, quiz answer keys — is produced by
-          deterministic solver code.
+          Every computed value in this app — traces, graph states, tableau
+          counts, quiz answer keys — is produced by deterministic solver code.
         </span>
         <span>
-          When an AI provider is configured it writes the explanation around that computed result; when none is
-          configured, curated offline lessons answer instead. Either way the reply is labelled with how it was produced,
-          and the model is never presented as having verified a computation.
+          When an AI provider is configured it writes the explanation around
+          that computed result; when none is configured, curated offline lessons
+          answer instead. Either way the reply is labelled with how it was
+          produced, and the model is never presented as having verified a
+          computation.
         </span>
       </p>
     </section>
@@ -594,7 +682,10 @@ function About() {
     >
       <div className="lp-section-head">
         <h2 id="lp-about-title">What it does</h2>
-        <p>Capabilities that exist in the app today — nothing here is on a roadmap.</p>
+        <p>
+          Capabilities that exist in the app today — nothing here is on a
+          roadmap.
+        </p>
       </div>
       <dl className="lp-capabilities">
         {CAPABILITIES.map((capability) => (
@@ -611,7 +702,10 @@ function About() {
 /** Section G — closing call to action. */
 function Closing() {
   return (
-    <section className="lp-section lp-closing" aria-labelledby="lp-closing-title">
+    <section
+      className="lp-section lp-closing"
+      aria-labelledby="lp-closing-title"
+    >
       <h2 id="lp-closing-title">{CLOSING.headline}</h2>
       <p className="lp-closing-lede">{CLOSING.supporting}</p>
       <div className="lp-closing-actions">
@@ -619,7 +713,10 @@ function Closing() {
           <IconChat />
           Try the Chat
         </Link>
-        <a className="lp-btn lp-btn-secondary lp-btn-lg" href={`#${SECTION_IDS.topics}`}>
+        <a
+          className="lp-btn lp-btn-secondary lp-btn-lg"
+          href={`#${SECTION_IDS.topics}`}
+        >
           Explore the Topics
           <IconArrowDown />
         </a>
@@ -636,8 +733,9 @@ function Footer() {
         <div className="lp-footer-brand">
           <Brand />
           <p className="lp-footer-note">
-            An algorithms and complexity tutor for college-level study: reductions, NP-completeness, approximation and
-            randomized algorithms.
+            An algorithms and complexity tutor for college-level study:
+            reductions, NP-completeness, approximation and randomized
+            algorithms.
           </p>
         </div>
         <nav className="lp-footer-links" aria-label="Footer">
@@ -655,8 +753,8 @@ function Footer() {
         </nav>
       </div>
       <p className="lp-footer-legal">
-        Conversations are stored in this browser only — nothing is uploaded or synced. No accounts, no subscription, no
-        payment.
+        Conversations are stored in this browser only — nothing is uploaded or
+        synced. No accounts, no subscription, no payment.
       </p>
     </footer>
   );
@@ -681,7 +779,12 @@ export function Landing() {
         <Hero />
         <TopicRail topics={topics} />
         <DemoSection />
-        <TopicGrid topics={topics} details={details} status={status} onRetry={reload} />
+        <TopicGrid
+          topics={topics}
+          details={details}
+          status={status}
+          onRetry={reload}
+        />
         <HowItWorks />
         <About />
         <Closing />
