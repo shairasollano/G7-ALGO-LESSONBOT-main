@@ -12,6 +12,7 @@ import type { ProviderStatus } from "../../App";
 import { Link } from "../../lib/router";
 import { IconMenu } from "../icons";
 import { providerLabel } from "./Sidebar";
+import algotutorRobot from "../../assets/AlgoTutor-robot.png";
 
 interface HeaderProps {
   topics: TopicSummary[];
@@ -40,8 +41,12 @@ export function Header({
   const title = conversationTitle ?? (topic ? topic.title : "G7 Algo");
   return (
     <header className="header">
-      <Link to="/" className="btn btn-icon header-home" aria-label="G7 Algo — back to the landing page">
-        <span aria-hidden="true">λ</span>
+      <Link
+        to="/"
+        className="btn btn-icon header-home"
+        aria-label="AlgoTutor AI — back to the landing page"
+      >
+        <img className="header-home-logo" src={algotutorRobot} alt="" />
       </Link>
       <button
         ref={triggerRef}
@@ -69,9 +74,15 @@ export function Header({
             <span className="provider-dot" aria-hidden="true" />
             {provider.enabled ? providerLabel(provider) : "Curated"}
           </span>
-          {streaming && <span className="streaming-dot" aria-label="Generating response" />}
+          {streaming && (
+            <span className="streaming-dot" aria-label="Generating response" />
+          )}
           <span className="header-level" title={`Teaching level: ${level}`}>
-            {level === "beginner" ? "Beginner" : level === "intermediate" ? "Intermediate" : "Formal"}
+            {level === "beginner"
+              ? "Beginner"
+              : level === "intermediate"
+                ? "Intermediate"
+                : "Formal"}
           </span>
         </span>
       </div>

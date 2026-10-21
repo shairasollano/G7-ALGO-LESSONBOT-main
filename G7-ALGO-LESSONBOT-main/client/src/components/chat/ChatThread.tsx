@@ -24,6 +24,7 @@ import {
   IconQuiz,
   IconRestart,
 } from "../icons";
+import algotutorRobot from "../../assets/AlgoTutor-robot.png";
 
 interface ChatThreadProps {
   messages: Message[];
@@ -46,18 +47,21 @@ const ACTION_ORDER: (keyof typeof TUTOR_ACTIONS)[] = [
  * action row reads as one set. Always `aria-hidden`: the chip's text label is
  * the accessible name.
  */
-const ACTION_ICONS: Record<string, (props: { size?: number }) => ReactElement> = {
-  explain_simpler: IconLightbulb,
-  formal_proof: IconProof,
-  another_example: IconLayers,
-  compare: IconCompare,
-  quiz: IconQuiz,
-};
+const ACTION_ICONS: Record<string, (props: { size?: number }) => ReactElement> =
+  {
+    explain_simpler: IconLightbulb,
+    formal_proof: IconProof,
+    another_example: IconLayers,
+    compare: IconCompare,
+    quiz: IconQuiz,
+  };
 
 function ModeLabel({ mode }: { mode: Message["mode"] }) {
   if (!mode) return null;
   return (
-    <span className={`mode-badge ${mode === "ai" ? "mode-ai" : "mode-curated"}`}>
+    <span
+      className={`mode-badge ${mode === "ai" ? "mode-ai" : "mode-curated"}`}
+    >
       {mode === "ai" ? "AI-generated" : "Curated lesson (offline)"}
     </span>
   );
@@ -86,11 +90,16 @@ function AssistantActions({
       /* clipboard unavailable */
     }
   };
-  const available = (actions ?? []).filter((a): a is keyof typeof TUTOR_ACTIONS =>
-    (ACTION_ORDER as string[]).includes(a),
+  const available = (actions ?? []).filter(
+    (a): a is keyof typeof TUTOR_ACTIONS =>
+      (ACTION_ORDER as string[]).includes(a),
   );
   return (
-    <div className="response-actions" role="group" aria-label="Response actions">
+    <div
+      className="response-actions"
+      role="group"
+      aria-label="Response actions"
+    >
       {/* Copy/Regenerate are always relevant, so they are always present; the
           server-declared actions appear only when the producer says it can
           honour them, and are disabled while a request is already running. */}
@@ -154,7 +163,9 @@ function AssistantMessage({
   const fullText = () =>
     [
       m.text ?? "",
-      ...(m.blocks?.map((b) => ("markdown" in b ? b.markdown : "")).filter(Boolean) ?? []),
+      ...(m.blocks
+        ?.map((b) => ("markdown" in b ? b.markdown : ""))
+        .filter(Boolean) ?? []),
     ]
       .filter(Boolean)
       .join("\n\n");
@@ -162,13 +173,18 @@ function AssistantMessage({
   return (
     <div className="message message-assistant">
       <div className="message-avatar" aria-hidden="true">
-        λ
+        <img className="message-avatar-logo" src={algotutorRobot} alt="" />
       </div>
       <div className="message-content">
         {m.error ? (
           <div className="message-error" role="alert">
             <p>{m.error}</p>
-            <button type="button" className="chip action-chip" onClick={onRegenerate} title="Send this question again">
+            <button
+              type="button"
+              className="chip action-chip"
+              onClick={onRegenerate}
+              title="Send this question again"
+            >
               <IconRestart size={15} />
               Retry
             </button>
@@ -180,7 +196,9 @@ function AssistantMessage({
                 <TextBlock markdown={m.text} />
               </div>
             ) : null}
-            {m.blocks && m.blocks.length > 0 && <BlockRenderer blocks={m.blocks} />}
+            {m.blocks && m.blocks.length > 0 && (
+              <BlockRenderer blocks={m.blocks} />
+            )}
             {streamingEmpty && (
               <div className="message-pending" role="status">
                 <span className="spinner" aria-hidden="true" />
@@ -196,7 +214,8 @@ function AssistantMessage({
         )}
         {m.fallbackReason && (
           <p className="message-fallback-note" role="note">
-            AI request failed: {m.fallbackReason}. Showing a curated lesson instead.
+            AI request failed: {m.fallbackReason}. Showing a curated lesson
+            instead.
           </p>
         )}
         <div className="message-foot">
@@ -226,7 +245,12 @@ function UserMessage({ m }: { m: Message }) {
   );
 }
 
-export function ChatThread({ messages, onAction, onRegenerate, streamingActive }: ChatThreadProps) {
+export function ChatThread({
+  messages,
+  onAction,
+  onRegenerate,
+  streamingActive,
+}: ChatThreadProps) {
   return (
     <div className="chat-thread" role="log" aria-label="Conversation">
       {messages.map((m, i) =>

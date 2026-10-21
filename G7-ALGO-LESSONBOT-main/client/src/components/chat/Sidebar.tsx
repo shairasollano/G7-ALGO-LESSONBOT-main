@@ -24,12 +24,16 @@ import {
   IconShield,
   IconTrash,
 } from "../icons";
+import algotutorRobot from "../../assets/AlgoTutor-robot.png";
+import algotutorWordmark from "../../assets/AlgoTutor-typography.png";
 
 /** Human-readable name for whatever the health endpoint reports. */
 export function providerLabel(provider: ProviderStatus): string {
   if (!provider.enabled) return "Curated lessons";
   const name = provider.provider.trim();
-  return name ? `${name.charAt(0).toUpperCase()}${name.slice(1)}` : "AI provider";
+  return name
+    ? `${name.charAt(0).toUpperCase()}${name.slice(1)}`
+    : "AI provider";
 }
 
 /**
@@ -38,7 +42,8 @@ export function providerLabel(provider: ProviderStatus): string {
  * the server is actually running.
  */
 export function providerDescription(provider: ProviderStatus): string {
-  if (!provider.enabled) return "AI provider is off. Curated offline lessons answer every question.";
+  if (!provider.enabled)
+    return "AI provider is off. Curated offline lessons answer every question.";
   return `${providerLabel(provider)} is answering this conversation.`;
 }
 
@@ -138,14 +143,34 @@ export function Sidebar({
 
   return (
     <>
-      {open && <div className="drawer-scrim" onClick={onClose} aria-hidden="true" />}
-      <aside className={`sidebar ${open ? "sidebar-open" : ""}`} aria-label="Conversation navigation">
+      {open && (
+        <div className="drawer-scrim" onClick={onClose} aria-hidden="true" />
+      )}
+      <aside
+        className={`sidebar ${open ? "sidebar-open" : ""}`}
+        aria-label="Conversation navigation"
+      >
         <div className="sidebar-head">
-          <Link to="/" className="sidebar-brand" aria-label="G7 Algo — back to the landing page">
-            <span className="brand-mark" aria-hidden="true">
-              λ
-            </span>
-            <span className="brand-name">G7 Algo</span>
+          <Link
+            to="/"
+            className="sidebar-brand"
+            aria-label="AlgoTutor AI — back to the landing page"
+          >
+            <img
+              className="sidebar-brand-robot"
+              src={algotutorRobot}
+              alt=""
+              aria-hidden="true"
+            />
+
+            <img
+              className="sidebar-brand-wordmark"
+              src={algotutorWordmark}
+              alt=""
+              aria-hidden="true"
+            />
+
+            <span className="sidebar-brand-ai">AI</span>
           </Link>
           <button
             ref={closeBtnRef}
@@ -232,8 +257,14 @@ export function Sidebar({
                       /* Deleting is destructive and browser-local storage has no
                          undo, so the row has to be confirmed where the click
                          landed rather than firing immediately. */
-                      <div className="recents-confirm" role="group" aria-label={`Delete "${conv.title}"?`}>
-                        <span className="recents-confirm-text">Delete this conversation?</span>
+                      <div
+                        className="recents-confirm"
+                        role="group"
+                        aria-label={`Delete "${conv.title}"?`}
+                      >
+                        <span className="recents-confirm-text">
+                          Delete this conversation?
+                        </span>
                         <span className="recents-actions">
                           <button
                             type="button"
@@ -266,7 +297,8 @@ export function Sidebar({
                         >
                           <span className="recents-title">{conv.title}</span>
                           <span className="recents-meta">
-                            {relativeTime(conv.updatedAt)} · {conv.messages.length} msg
+                            {relativeTime(conv.updatedAt)} ·{" "}
+                            {conv.messages.length} msg
                           </span>
                         </button>
                         <span className="recents-actions">
@@ -303,11 +335,16 @@ export function Sidebar({
         </nav>
 
         <details className="sidebar-section sidebar-topics-details">
-          <summary className="sidebar-label sidebar-label-with-icon" aria-label="Topic catalog">
+          <summary
+            className="sidebar-label sidebar-label-with-icon"
+            aria-label="Topic catalog"
+          >
             <IconGraph />
             Topic catalog
           </summary>
-          <p className="sidebar-note">Optional context — you can ask about any topic directly in the chat.</p>
+          <p className="sidebar-note">
+            Optional context — you can ask about any topic directly in the chat.
+          </p>
           {topics.map((t) => {
             const active = t.slug === topicId;
             return (
@@ -332,7 +369,11 @@ export function Sidebar({
           <p className="sidebar-label" id="level-label">
             Level
           </p>
-          <div className="segmented" role="radiogroup" aria-labelledby="level-label">
+          <div
+            className="segmented"
+            role="radiogroup"
+            aria-labelledby="level-label"
+          >
             {LEARNING_LEVELS.map((l) => (
               <button
                 key={l}

@@ -7,8 +7,19 @@
  * client follows it. Recent conversations persist in browser-local storage —
  * no accounts, no database, nothing uploaded.
  */
-import { useCallback, useEffect, useRef, useState, type ReactElement } from "react";
-import type { AssessmentSubmitResponse, ChatBlock, LearningLevel, TopicSummary } from "@shared/contract";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactElement,
+} from "react";
+import type {
+  AssessmentSubmitResponse,
+  ChatBlock,
+  LearningLevel,
+  TopicSummary,
+} from "@shared/contract";
 import { TUTOR_ACTIONS } from "@shared/contract";
 import { api, friendlyError, streamChat } from "./api/client";
 import { ChatThread } from "./components/chat/ChatThread";
@@ -37,6 +48,7 @@ import {
   upsertConversation,
   type StoredConversation,
 } from "./lib/conversations";
+import algotutorRobot from "./assets/AlgoTutor-robot.png";
 
 export interface Message {
   id: string;
@@ -84,13 +96,48 @@ export interface AppProps {
  * not sixty: enough to show the range of the product without turning the empty
  * state into a topic catalogue.
  */
-const CAPABILITY_CHIPS: { label: string; prompt: string; hint: string; Icon: (p: IconProps) => ReactElement }[] = [
-  { label: "Explain a concept", prompt: "Explain polynomial-time reductions to me as a beginner", hint: "Plain-language intro to reductions", Icon: IconLightbulb },
-  { label: "Prove a theorem", prompt: "Show me the formal proof of the Cook–Levin theorem", hint: "Formal statement and proof sketch", Icon: IconProof },
-  { label: "Run an algorithm", prompt: "Run a randomized Max-Cut demo", hint: "Verified step-by-step solver trace", Icon: IconGraph },
-  { label: "Visualize a graph", prompt: "Visualize a Vertex Cover example on a graph", hint: "Graph rendering of a worked instance", Icon: IconLayers },
-  { label: "Compare approaches", prompt: "Compare Vertex Cover approximation with randomized Max-Cut", hint: "Guarantees and trade-offs", Icon: IconCompare },
-  { label: "Generate a practice question", prompt: "Generate a practice question for me", hint: "Graded quiz from the validated bank", Icon: IconQuiz },
+const CAPABILITY_CHIPS: {
+  label: string;
+  prompt: string;
+  hint: string;
+  Icon: (p: IconProps) => ReactElement;
+}[] = [
+  {
+    label: "Explain a concept",
+    prompt: "Explain polynomial-time reductions to me as a beginner",
+    hint: "Plain-language intro to reductions",
+    Icon: IconLightbulb,
+  },
+  {
+    label: "Prove a theorem",
+    prompt: "Show me the formal proof of the Cook–Levin theorem",
+    hint: "Formal statement and proof sketch",
+    Icon: IconProof,
+  },
+  {
+    label: "Run an algorithm",
+    prompt: "Run a randomized Max-Cut demo",
+    hint: "Verified step-by-step solver trace",
+    Icon: IconGraph,
+  },
+  {
+    label: "Visualize a graph",
+    prompt: "Visualize a Vertex Cover example on a graph",
+    hint: "Graph rendering of a worked instance",
+    Icon: IconLayers,
+  },
+  {
+    label: "Compare approaches",
+    prompt: "Compare Vertex Cover approximation with randomized Max-Cut",
+    hint: "Guarantees and trade-offs",
+    Icon: IconCompare,
+  },
+  {
+    label: "Generate a practice question",
+    prompt: "Generate a practice question for me",
+    hint: "Graded quiz from the validated bank",
+    Icon: IconQuiz,
+  },
 ];
 
 let idCounter = 0;
@@ -109,7 +156,10 @@ function blockHistoryFacts(m: Message): string {
         return `[Verified ${trace.algorithmName} result: ${JSON.stringify(trace.result).slice(0, 400)}${trace.guarantee ? `, guarantee: ${trace.guarantee}` : ""}]`;
       }
       if (b.type === "graph") {
-        return `[Graph shown: ${b.data.nodes.length} vertices (${b.data.nodes.map((n) => n.label).join(", ").slice(0, 120)}), ${b.data.edges.length} edges]`;
+        return `[Graph shown: ${b.data.nodes.length} vertices (${b.data.nodes
+          .map((n) => n.label)
+          .join(", ")
+          .slice(0, 120)}), ${b.data.edges.length} edges]`;
       }
       if (b.type === "quiz") return `[Practice quiz shown: ${b.quiz.title}]`;
       return "";
@@ -123,13 +173,19 @@ function currentConversationId(): string {
   return newConversationId();
 }
 
-export default function App({ prefill = null, topicFromRoute = null }: AppProps = {}) {
+export default function App({
+  prefill = null,
+  topicFromRoute = null,
+}: AppProps = {}) {
   const [topics, setTopics] = useState<TopicSummary[]>([]);
   const [topicId, setTopicId] = useState<string>("polynomial-reductions");
   const [level, setLevel] = useState<LearningLevel>("beginner");
   const [messages, setMessages] = useState<Message[]>([]);
   const [streamingId, setStreamingId] = useState<string | null>(null);
-  const [provider, setProvider] = useState<ProviderStatus>({ provider: "curated", enabled: false });
+  const [provider, setProvider] = useState<ProviderStatus>({
+    provider: "curated",
+    enabled: false,
+  });
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   /** The header menu button that opens the drawer; focus returns to it. */
@@ -154,9 +210,13 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
   const [draft, setDraft] = useState<string | null>(prefill);
 
   // Recent conversations (browser-local; no database).
-  const [conversations, setConversations] = useState<StoredConversation[]>(() => loadConversations());
+  const [conversations, setConversations] = useState<StoredConversation[]>(() =>
+    loadConversations(),
+  );
   const [conversationId, setConversationId] = useState<string | null>(null);
-  const [conversationTitle, setConversationTitle] = useState<string | null>(null);
+  const [conversationTitle, setConversationTitle] = useState<string | null>(
+    null,
+  );
 
   // Quiz (assessment) view. `quizSetupOpen` shows the setup dialog; `quiz`
   // holds a loaded assessment to take. Both are null when the chat is showing,
@@ -191,7 +251,11 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
         difficulty: value.difficulty,
         format: value.format,
       });
-      setQuiz({ assessment: res.assessment, questions: res.questions, notes: res.notes });
+      setQuiz({
+        assessment: res.assessment,
+        questions: res.questions,
+        notes: res.notes,
+      });
       setQuizSetupOpen(false);
     } catch (err) {
       setQuizError(friendlyError(err));
@@ -208,12 +272,18 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
   }, []);
 
   const submitQuiz = useCallback(
-    (assessmentId: string, answers: Record<string, number | null>): Promise<AssessmentSubmitResponse> =>
+    (
+      assessmentId: string,
+      answers: Record<string, number | null>,
+    ): Promise<AssessmentSubmitResponse> =>
       api.submitAssessment({ assessmentId, answers }),
     [],
   );
 
-  const fetchAnswerKey = useCallback((assessmentId: string) => api.getAssessmentAnswerKey(assessmentId), []);
+  const fetchAnswerKey = useCallback(
+    (assessmentId: string) => api.getAssessmentAnswerKey(assessmentId),
+    [],
+  );
 
   // Auto-scroll: only when the user is already near the bottom.
   const threadRef = useRef<HTMLDivElement>(null);
@@ -231,7 +301,12 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
     title: string | null;
     topicId: string;
     level: LearningLevel;
-  }>({ id: null, title: null, topicId: "polynomial-reductions", level: "beginner" });
+  }>({
+    id: null,
+    title: null,
+    topicId: "polynomial-reductions",
+    level: "beginner",
+  });
   const messagesRef = useRef<Message[]>([]);
   messagesRef.current = messages;
 
@@ -253,7 +328,10 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
     if (!topicFromRoute || topics.length === 0) return;
     if (!topics.some((topic) => topic.slug === topicFromRoute)) return;
     setTopicId(topicFromRoute);
-    conversationStateRef.current = { ...conversationStateRef.current, topicId: topicFromRoute };
+    conversationStateRef.current = {
+      ...conversationStateRef.current,
+      topicId: topicFromRoute,
+    };
   }, [topicFromRoute, topics]);
 
   // A seed question updates the composer draft. It is only ever a draft: the
@@ -268,7 +346,8 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
       if (finalMessages.length === 0) return;
       const state = conversationStateRef.current;
       const convId = state.id ?? currentConversationId();
-      const firstUser = finalMessages.find((m) => m.role === "user")?.text ?? "";
+      const firstUser =
+        finalMessages.find((m) => m.role === "user")?.text ?? "";
       const stored: StoredConversation = {
         id: convId,
         title: state.title ?? titleFromMessage(firstUser || "Conversation"),
@@ -368,7 +447,8 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
       if (!trimmed) return;
       if (inFlightRef.current || cancelRef.current) return; // no duplicate submissions
       inFlightRef.current = true;
-      const effectiveTopicId = topicOverride ?? conversationStateRef.current.topicId;
+      const effectiveTopicId =
+        topicOverride ?? conversationStateRef.current.topicId;
       const levelForTurn = level;
 
       const userMsg: Message = {
@@ -394,7 +474,10 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
           content:
             m.role === "user"
               ? (m.text ?? "")
-              : [m.text ?? "", blockHistoryFacts(m)].filter(Boolean).join("\n").slice(0, 2000),
+              : [m.text ?? "", blockHistoryFacts(m)]
+                  .filter(Boolean)
+                  .join("\n")
+                  .slice(0, 2000),
         }));
 
       const priorMessages = messagesRef.current;
@@ -402,7 +485,11 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
         conversationStateRef.current = {
           ...conversationStateRef.current,
           id: currentConversationId(),
-          title: titleFromMessage(priorMessages.length === 0 ? trimmed : (priorMessages.find((m) => m.role === "user")?.text ?? trimmed)),
+          title: titleFromMessage(
+            priorMessages.length === 0
+              ? trimmed
+              : (priorMessages.find((m) => m.role === "user")?.text ?? trimmed),
+          ),
         };
         setConversationId(conversationStateRef.current.id);
         setConversationTitle(conversationStateRef.current.title);
@@ -411,7 +498,13 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
       setMessages((prev) => [
         ...prev,
         userMsg,
-        { id: assistantId, role: "assistant", streaming: true, topicId: effectiveTopicId, level: levelForTurn },
+        {
+          id: assistantId,
+          role: "assistant",
+          streaming: true,
+          topicId: effectiveTopicId,
+          level: levelForTurn,
+        },
       ]);
       setStreamingId(assistantId);
       setDrawerOpen(false);
@@ -423,7 +516,9 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
         done = true;
         flushDeltas();
         setMessages((prev) => {
-          const next = prev.map((m) => (m.id === assistantId ? { ...m, streaming: false, ...patch } : m));
+          const next = prev.map((m) =>
+            m.id === assistantId ? { ...m, streaming: false, ...patch } : m,
+          );
           return next;
         });
         setStreamingId(null);
@@ -432,7 +527,12 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
       };
 
       cancelRef.current = streamChat(
-        { message: trimmed, topicId: effectiveTopicId, level: levelForTurn, history },
+        {
+          message: trimmed,
+          topicId: effectiveTopicId,
+          level: levelForTurn,
+          history,
+        },
         {
           onDelta: (delta) => queueDelta(assistantId, delta),
           onBlock: (_index, block) => {
@@ -440,27 +540,45 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
             // flush pending deltas first so ordering stays truthful.
             flushDeltas();
             setMessages((prev) =>
-              prev.map((m) => (m.id === assistantId ? { ...m, blocks: [...(m.blocks ?? []), block] } : m)),
+              prev.map((m) =>
+                m.id === assistantId
+                  ? { ...m, blocks: [...(m.blocks ?? []), block] }
+                  : m,
+              ),
             );
           },
           onMeta: (meta) => {
             // Topic switching without the sidebar: the server's effective
             // topic governs the conversation from now on.
             if (meta.effectiveTopicId) {
-              conversationStateRef.current = { ...conversationStateRef.current, topicId: meta.effectiveTopicId };
+              conversationStateRef.current = {
+                ...conversationStateRef.current,
+                topicId: meta.effectiveTopicId,
+              };
               setTopicId(meta.effectiveTopicId);
             }
             setMessages((prev) =>
-              prev.map((m) => (m.id === assistantId && !m.mode ? { ...m, mode: meta.mode } : m)),
+              prev.map((m) =>
+                m.id === assistantId && !m.mode ? { ...m, mode: meta.mode } : m,
+              ),
             );
           },
           onDone: (info) => {
             if (info.effectiveTopicId) {
-              conversationStateRef.current = { ...conversationStateRef.current, topicId: info.effectiveTopicId };
+              conversationStateRef.current = {
+                ...conversationStateRef.current,
+                topicId: info.effectiveTopicId,
+              };
               setTopicId(info.effectiveTopicId);
             }
-            finishTurn({ actions: info.actions, fallbackReason: info.fallbackReason });
-            window.setTimeout(() => persistConversation(messagesRef.current), 60);
+            finishTurn({
+              actions: info.actions,
+              fallbackReason: info.fallbackReason,
+            });
+            window.setTimeout(
+              () => persistConversation(messagesRef.current),
+              60,
+            );
           },
           onError: (message) => {
             finishTurn({ error: message });
@@ -479,7 +597,9 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
       const id = streamingId;
       setMessages((prev) =>
         prev.map((m) =>
-          m.id === id ? { ...m, streaming: false, stopped: !m.text && !m.blocks?.length } : m,
+          m.id === id
+            ? { ...m, streaming: false, stopped: !m.text && !m.blocks?.length }
+            : m,
         ),
       );
       setStreamingId(null);
@@ -519,25 +639,28 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
     void send(user.text ?? "", user.topicId);
   }, [messages, streamingId, send]);
 
-  const selectTopic = useCallback(
-    (id: string) => {
-      setTopicId(id);
-      conversationStateRef.current = { ...conversationStateRef.current, topicId: id };
-    },
-    [],
-  );
+  const selectTopic = useCallback((id: string) => {
+    setTopicId(id);
+    conversationStateRef.current = {
+      ...conversationStateRef.current,
+      topicId: id,
+    };
+  }, []);
 
   const openConversation = useCallback(
     (id: string) => {
       const conv = conversations.find((c) => c.id === id);
       if (!conv) return;
       stop();
-      setMessages(
-        conv.messages.map((m) => ({ ...m, streaming: false })),
-      );
+      setMessages(conv.messages.map((m) => ({ ...m, streaming: false })));
       setConversationId(conv.id);
       setConversationTitle(conv.title);
-      conversationStateRef.current = { id: conv.id, title: conv.title, topicId: conv.topicId, level: conv.level };
+      conversationStateRef.current = {
+        id: conv.id,
+        title: conv.title,
+        topicId: conv.topicId,
+        level: conv.level,
+      };
       setTopicId(conv.topicId);
       setLevel(conv.level);
       setDrawerOpen(false);
@@ -567,7 +690,10 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
       setConversations(next);
       if (id === conversationId && title.trim()) {
         setConversationTitle(title.trim());
-        conversationStateRef.current = { ...conversationStateRef.current, title: title.trim() };
+        conversationStateRef.current = {
+          ...conversationStateRef.current,
+          title: title.trim(),
+        };
       }
     },
     [conversations, conversationId],
@@ -624,95 +750,127 @@ export default function App({ prefill = null, topicFromRoute = null }: AppProps 
         ) : (
           <>
             <div className="thread-wrap">
-        <main
-          className="thread"
-          ref={threadRef}
-          onScroll={onThreadScroll}
-          aria-live="polite"
-        >
-          <div className="thread-inner">
-            {messages.length === 0 ? (
-              <div className="welcome">
-                <div className="welcome-icon" aria-hidden="true">
-                  λ
-                </div>
-                <h1 className="welcome-title">What would you like to learn today?</h1>
-                <p className="welcome-sub">
-                  Ask a question in your own words — no topic selection needed. I can explain concepts, prove theorems,
-                  run verified algorithms step by step, and draw graphs.
-                  {provider.enabled ? " Responses are AI-generated." : " Responses come from curated, offline lessons."}
-                </p>
-                {/* Six real request paths, each sending the message it names.
+              <main
+                className="thread"
+                ref={threadRef}
+                onScroll={onThreadScroll}
+                aria-live="polite"
+              >
+                <div className="thread-inner">
+                  {messages.length === 0 ? (
+                    <div className="welcome">
+                      <div className="welcome-icon" aria-hidden="true">
+                        <img
+                          className="welcome-robot"
+                          src={algotutorRobot}
+                          alt=""
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <h1 className="welcome-title">
+                        What would you like to learn today?
+                      </h1>
+                      <p className="welcome-sub">
+                        Ask a question in your own words — no topic selection
+                        needed. I can explain concepts, prove theorems, run
+                        verified algorithms step by step, and draw graphs.
+                        {provider.enabled
+                          ? " Responses are AI-generated."
+                          : " Responses come from curated, offline lessons."}
+                      </p>
+                      {/* Six real request paths, each sending the message it names.
                     They are starters, not a catalogue: every one of them routes
                     through the same send path as typing the question yourself. */}
-                <div className="starter-chips" role="group" aria-label="Suggested starting points">
-                  {CAPABILITY_CHIPS.map(({ label, prompt, hint, Icon }) => (
-                    <button
-                      key={label}
-                      type="button"
-                      className="chip starter-chip"
-                      title={prompt}
-                      onClick={() => void send(prompt)}
-                    >
-                      <span className="starter-chip-icon" aria-hidden="true">
-                        <Icon size={18} />
-                      </span>
-                      <span className="starter-chip-text">
-                        <span className="starter-chip-label">{label}</span>
-                        <span className="starter-chip-hint">{hint}</span>
-                      </span>
-                    </button>
-                  ))}
-                </div>
-                {conversations.length > 0 && (
-                  <p className="welcome-note">
-                    Your recent conversations are kept in this browser only — open one from the menu.
-                  </p>
-                )}
-                {/* Second entry point to the quiz. On a phone the sidebar is a
+                      <div
+                        className="starter-chips"
+                        role="group"
+                        aria-label="Suggested starting points"
+                      >
+                        {CAPABILITY_CHIPS.map(
+                          ({ label, prompt, hint, Icon }) => (
+                            <button
+                              key={label}
+                              type="button"
+                              className="chip starter-chip"
+                              title={prompt}
+                              onClick={() => void send(prompt)}
+                            >
+                              <span
+                                className="starter-chip-icon"
+                                aria-hidden="true"
+                              >
+                                <Icon size={18} />
+                              </span>
+                              <span className="starter-chip-text">
+                                <span className="starter-chip-label">
+                                  {label}
+                                </span>
+                                <span className="starter-chip-hint">
+                                  {hint}
+                                </span>
+                              </span>
+                            </button>
+                          ),
+                        )}
+                      </div>
+                      {conversations.length > 0 && (
+                        <p className="welcome-note">
+                          Your recent conversations are kept in this browser
+                          only — open one from the menu.
+                        </p>
+                      )}
+                      {/* Second entry point to the quiz. On a phone the sidebar is a
                     drawer, so without this a student would have to open the
                     menu to find the feature at all. */}
-                <div className="welcome-quiz">
-                  <button type="button" className="btn btn-secondary" onClick={openQuizSetup}>
-                    <IconQuiz />
-                    Create a quiz
-                  </button>
-                  <p className="welcome-quiz-hint">
-                    Ten to fifty questions across every topic, graded when you submit — and printable as a paper
-                    worksheet.
-                  </p>
+                      <div className="welcome-quiz">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={openQuizSetup}
+                        >
+                          <IconQuiz />
+                          Create a quiz
+                        </button>
+                        <p className="welcome-quiz-hint">
+                          Ten to fifty questions across every topic, graded when
+                          you submit — and printable as a paper worksheet.
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <ChatThread
+                      messages={messages}
+                      streamingActive={Boolean(streamingId)}
+                      onAction={(action) => void send(action)}
+                      onRegenerate={regenerate}
+                    />
+                  )}
                 </div>
-              </div>
-            ) : (
-              <ChatThread
-                messages={messages}
-                streamingActive={Boolean(streamingId)}
-                onAction={(action) => void send(action)}
-                onRegenerate={regenerate}
-              />
-            )}
-          </div>
-        </main>
-        {/* Only ever offered when the reader has scrolled away from the
+              </main>
+              {/* Only ever offered when the reader has scrolled away from the
             newest content; auto-scroll never overrides them otherwise. The
             wrapper puts it at the foot of the reading area: inside the
             scrolling box it would scroll away, over the composer it would
             cover the input. */}
-        {showJumpToLatest && messages.length > 0 && (
-          <button type="button" className="jump-latest" onClick={jumpToLatest}>
-            <IconArrowDownToLine />
-            Latest
-          </button>
-        )}
-        </div>
-        <Composer
-          onSend={(text) => void send(text)}
-          onStop={stop}
-          streaming={Boolean(streamingId)}
-          draft={draft}
-          hintId="composer-hint"
-          placeholder="Ask anything — e.g. 'run a Max-Cut demo' or 'explain the formal proof'"
-        />
+              {showJumpToLatest && messages.length > 0 && (
+                <button
+                  type="button"
+                  className="jump-latest"
+                  onClick={jumpToLatest}
+                >
+                  <IconArrowDownToLine />
+                  Latest
+                </button>
+              )}
+            </div>
+            <Composer
+              onSend={(text) => void send(text)}
+              onStop={stop}
+              streaming={Boolean(streamingId)}
+              draft={draft}
+              hintId="composer-hint"
+              placeholder="Ask anything — e.g. 'run a Max-Cut demo' or 'explain the formal proof'"
+            />
           </>
         )}
       </div>

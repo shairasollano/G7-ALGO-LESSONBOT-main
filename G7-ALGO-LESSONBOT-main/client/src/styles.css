@@ -2026,3 +2026,399 @@ body {
   text-align: center;
   line-height: 1.45;
 }
+
+
+/* =========================================================
+   ALGOTUTOR AI — CHAT THEME
+   White + yellow + dark charcoal
+   Add this section at the BOTTOM of styles.css
+   ========================================================= */
+
+:root {
+  /* Main surfaces */
+  --bg: #FFFFFF;
+  --bg-soft: #F9F8F4;
+  --surface: #FFFFFF;
+
+  /* Borders and text */
+  --border: #DFDFD9;
+  --border-soft: #ECEBE5;
+  --text: #1A1A19;
+  --text-muted: #686861;
+
+  /* Dark gold is used for text that needs strong contrast */
+  --accent: #8A6100;
+  --accent-hover: #6D4D00;
+  --accent-soft: #FFF7D6;
+  --accent-line: #E7C64D;
+
+  /* Bright brand yellow is reserved for surfaces */
+  --brand-yellow: #F9BE08;
+  --brand-yellow-hover: #EFD30B;
+
+  /* Neutral shadows and visible keyboard focus */
+  --shadow-1: 0 1px 3px rgba(26, 26, 25, 0.05);
+  --shadow-2: 0 4px 14px rgba(26, 26, 25, 0.06);
+  --shadow-3: 0 12px 28px rgba(26, 26, 25, 0.10);
+  --shadow-overlay: 0 18px 40px rgba(26, 26, 25, 0.16);
+  --shadow: var(--shadow-2);
+
+  --highlight: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --well: inset 0 1px 2px rgba(26, 26, 25, 0.04);
+  --focus-ring: 0 0 0 3px rgba(138, 97, 0, 0.24);
+}
+
+/* ---------- Application surfaces ---------- */
+
+.app,
+.main,
+.thread {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.sidebar {
+  background: var(--bg-soft);
+  border-right-color: var(--border);
+}
+
+.sidebar-footer,
+.sidebar-topics-details {
+  border-color: var(--border);
+}
+
+/* ---------- Sidebar navigation ---------- */
+
+.sidebar-topic {
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.sidebar-topic:hover {
+  background: #F0EEE5;
+}
+
+.sidebar-topic-active {
+  background: var(--accent-soft);
+  color: var(--text);
+  font-weight: 700;
+  box-shadow: inset 3px 0 0 var(--brand-yellow);
+}
+
+.recents-item-active {
+  background: #FFFFFF;
+  box-shadow:
+    inset 3px 0 0 var(--brand-yellow),
+    inset 0 0 0 1px var(--border),
+    var(--shadow-1);
+}
+
+.recents-item-active .recents-title {
+  color: var(--text);
+}
+
+.segmented {
+  background: #ECEBE5;
+  box-shadow: none;
+}
+
+.segment-active {
+  background: #FFFFFF;
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--accent-line);
+}
+
+.provider-ai {
+  border-color: var(--accent-line);
+  color: #6D4D00;
+  background: var(--accent-soft);
+}
+
+.provider-ai .provider-dot {
+  background: var(--brand-yellow);
+  box-shadow: 0 0 0 2px rgba(249, 190, 8, 0.18);
+}
+
+/* ---------- Header ---------- */
+
+.header {
+  background: rgba(255, 255, 255, 0.97);
+  background-image: none;
+  border-bottom-color: var(--border);
+  box-shadow: 0 1px 4px rgba(26, 26, 25, 0.035);
+}
+
+.btn-icon:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+}
+
+.btn-icon:active {
+  background: #F0EEE5;
+}
+
+/* ---------- Welcome screen ---------- */
+
+.welcome {
+  max-width: 680px;
+  gap: 16px;
+}
+
+.welcome-title {
+  color: var(--text);
+  font-size: clamp(25px, 3vw, 34px);
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+}
+
+.welcome-sub {
+  color: var(--text-muted);
+  line-height: 1.75;
+}
+
+.welcome-note {
+  color: var(--text-muted);
+}
+
+/* ---------- Suggested questions ---------- */
+
+.starter-chip {
+  background: #FFFFFF;
+  border-color: var(--border);
+  box-shadow: var(--shadow-1);
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.starter-chip:hover {
+  background: #FFFFFF;
+  border-color: var(--accent-line);
+  box-shadow: var(--shadow-2);
+  transform: translateY(-1px);
+}
+
+.starter-chip-icon {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.chip:hover {
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+/* ---------- Primary and secondary buttons ---------- */
+
+.btn-primary {
+  background: var(--brand-yellow);
+  border-color: transparent;
+  color: #1A1A19;
+  box-shadow: var(--shadow-1);
+}
+
+.btn-primary:hover {
+  background: var(--brand-yellow-hover);
+  border-color: transparent;
+  color: #1A1A19;
+  box-shadow: var(--shadow-2);
+}
+
+.btn-primary:active {
+  background: var(--brand-yellow-hover);
+  color: #1A1A19;
+  box-shadow: var(--shadow-1);
+}
+
+.btn-primary:disabled {
+  background: #F5E5A5;
+  color: #716A51;
+  opacity: 0.85;
+  box-shadow: none;
+}
+
+.btn-secondary {
+  background: #FFFFFF;
+  color: var(--text);
+  border-color: var(--border);
+  box-shadow: var(--shadow-1);
+}
+
+.btn-secondary:hover {
+  background: var(--accent-soft);
+  color: var(--text);
+  border-color: var(--accent-line);
+}
+
+.btn-stop {
+  background: #1A1A19;
+  color: #FFFFFF;
+  box-shadow: var(--shadow-1);
+}
+
+/* ---------- Conversation messages ---------- */
+
+.message-pill {
+  background: #FFF7D6;
+  color: var(--text);
+  border-color: #F0D778;
+  box-shadow: none;
+  border-radius: 16px 16px 4px 16px;
+}
+
+.message-content {
+  line-height: 1.7;
+}
+
+.message-fallback-note {
+  background: #F9F8F4;
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+
+.mode-ai {
+  color: #6D4D00;
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+}
+
+.response-actions .action-chip:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+  color: var(--text);
+}
+
+/* ---------- Input area ---------- */
+
+.composer {
+  background: #FFFFFF;
+  border-top-color: var(--border);
+  box-shadow: 0 -4px 18px rgba(26, 26, 25, 0.025);
+}
+
+.composer-row {
+  background: #FFFFFF;
+  border-color: var(--border);
+  box-shadow: var(--shadow-1);
+}
+
+.composer-row:focus-within {
+  border-color: var(--accent-line);
+  box-shadow: var(--shadow-1), var(--focus-ring);
+}
+
+.composer-input::placeholder {
+  color: #85857C;
+}
+
+.composer-hint {
+  color: var(--text-muted);
+}
+
+/* ---------- Accessible links and focus states ---------- */
+
+.source-ref-link {
+  color: #6D4D00;
+  text-decoration-color: var(--brand-yellow);
+}
+
+.btn:focus-visible,
+.chip:focus-visible,
+.segment:focus-visible,
+.sidebar-topic:focus-visible,
+.linklike:focus-visible,
+.btn-icon:focus-visible,
+.starter-chip:focus-visible,
+.recents-open:focus-visible,
+.jump-latest:focus-visible {
+  outline-color: var(--accent);
+}
+
+/* Keep the theme responsive on narrow screens */
+@media (max-width: 640px) {
+  .welcome {
+    max-width: 100%;
+  }
+
+  .welcome-title {
+    font-size: 27px;
+  }
+
+  .composer {
+    background: #FFFFFF;
+  }
+}
+
+/* Sidebar logo */
+
+.sidebar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.sidebar-brand-robot {
+  width: 32px;
+  height: 34px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.sidebar-brand-wordmark {
+  width: 100px;
+  max-width: 34vw;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 1;
+}
+
+.sidebar-brand-ai {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.welcome-robot {
+  display: block;
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  margin-bottom: 2px;
+}
+
+.message-avatar {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  width: 34px;
+  height: 36px;
+  margin-top: 2px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.message-avatar-logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.header-home {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-home-logo {
+  width: 28px;
+  height: 30px;
+  object-fit: contain;
+}
+
