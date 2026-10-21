@@ -1,0 +1,19 @@
+{
+  "name": "algotutor-ai",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "AlgoTutor AI — AI-assisted algorithms and theorems tutor. React + Express + Node.js with curated in-code data and no database.",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "build": "npm --prefix server run build && npm --prefix client run build",
+    "typecheck": "npm --prefix server run typecheck && npm --prefix client run typecheck",
+    "test": "npm --prefix server test && npm --prefix client test",
+    "start": "npm --prefix server run start"
+  },
+  "dependencies": {
+    "all": "^0.0.0"
+  }
+}

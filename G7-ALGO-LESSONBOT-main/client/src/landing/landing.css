@@ -1,0 +1,2077 @@
+/* =============================================================================
+   G7 Algo — landing page
+   -----------------------------------------------------------------------------
+   Scoped entirely under .lp so the chat shell's tokens and rules in styles.css
+   are untouched. Light editorial surface, one accent (the product's own
+   indigo), and a small semantic set for algorithm states that mirrors the
+   graph block's legend so the page and the app agree.
+
+   Surface: marketing. Density: comfortable (64–96px section rhythm).
+   Spacing is a strict 8px grid: 4 8 12 16 24 32 40 48 64 80 96.
+   ============================================================================= */
+
+.lp {
+  /* Neutrals — warm off-white rather than pure #fff. */
+  --lp-paper: #fbfbf9;
+  --lp-paper-2: #f4f4f0;
+  --lp-ink: #14161b;
+  --lp-ink-2: #454b57;
+  --lp-ink-3: #5f6673;
+  --lp-line: #e3e2dc;
+  --lp-line-2: #cfcec6;
+
+  /* One accent: the product's identity colour, deepened for contrast on paper. */
+  --lp-accent: #4338ca;
+  --lp-accent-hover: #3730a3;
+  --lp-accent-soft: #ecebfa;
+  --lp-accent-line: #c9c4f4;
+  --lp-focus: #4338ca;
+
+  /* Algorithm-state semantics, aligned with the chat's graph legend. */
+  --lp-node-fill: #eef0f4;
+  --lp-node-stroke: #6b7280;
+  --lp-active: #1d4ed8;
+  --lp-active-fill: #dbeafe;
+  --lp-selected: #15803d;
+  --lp-selected-fill: #dcfce7;
+  --lp-uncovered: #b91c1c;
+  --lp-uncovered-fill: #fee2e2;
+  --lp-cut: #b45309;
+  --lp-cut-fill: #fef3c7;
+  --lp-side-a: #4338ca;
+  --lp-side-a-fill: #e0e7ff;
+  --lp-side-b: #be185d;
+  --lp-side-b-fill: #fce7f3;
+
+  --lp-display: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
+  --lp-ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Corner radii, one scale for every surface on the page. */
+  --lp-radius-sm: 8px;
+  --lp-radius-md: 12px;
+  --lp-radius-lg: 14px;
+  --lp-radius-xl: 18px;
+
+  /* Layered elevation. `1` is a contact shadow, `2` adds a soft ambient
+     shadow, `3` is for overlays; the accent variant lifts primary actions. */
+  --lp-shadow-1: 0 1px 2px rgba(20, 22, 27, 0.06);
+  --lp-shadow-2: 0 1px 2px rgba(20, 22, 27, 0.05), 0 12px 28px -14px rgba(20, 22, 27, 0.2);
+  --lp-shadow-3: 0 2px 6px rgba(20, 22, 27, 0.08), 0 32px 64px -28px rgba(20, 22, 27, 0.35);
+  --lp-shadow-accent: 0 1px 2px rgba(23, 20, 60, 0.4), 0 8px 20px -8px rgba(67, 56, 202, 0.55);
+  --lp-shadow-accent-hover: 0 2px 4px rgba(23, 20, 60, 0.4), 0 14px 30px -10px rgba(67, 56, 202, 0.6);
+  --lp-shadow-accent-press: 0 1px 2px rgba(23, 20, 60, 0.45);
+  /* Inner surfaces: a top-edge highlight and a shallow inset for canvases. */
+  --lp-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  --lp-shadow-inset: inset 0 1px 2px rgba(20, 22, 27, 0.05), inset 0 0 0 1px rgba(20, 22, 27, 0.02);
+
+  background: var(--lp-paper);
+  color: var(--lp-ink);
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100%;
+}
+
+/* Revealed on focus. No transition: a skip link must appear the instant it
+   takes focus, and a moving target is a poor affordance for keyboard users. */
+.lp-skip {
+  position: absolute;
+  left: 12px;
+  top: -80px;
+  z-index: 60;
+  background: var(--lp-ink);
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+}
+.lp-skip:focus {
+  top: 12px;
+}
+
+.lp :focus-visible {
+  outline: 2px solid var(--lp-focus);
+  outline-offset: 2px;
+}
+
+/* Section targets take focus after an in-page navigation so keyboard and
+   screen-reader users arrive at the content they asked for rather than staying
+   on the nav link. Ringing the whole section would draw a box around a
+   1200px-wide block, so the indicator sits on its heading instead. */
+.lp-section[tabindex="-1"]:focus {
+  outline: none;
+}
+.lp-section[tabindex="-1"]:focus-visible .lp-section-head {
+  outline: 2px solid var(--lp-focus);
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------------ buttons */
+
+.lp-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: 10px 18px;
+  min-height: 44px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.15s var(--lp-ease), border-color 0.15s var(--lp-ease), color 0.15s var(--lp-ease),
+    box-shadow 0.18s var(--lp-ease), transform 0.18s var(--lp-ease);
+}
+.lp-btn svg {
+  flex-shrink: 0;
+}
+.lp-btn-primary {
+  overflow: hidden;
+  background: linear-gradient(180deg, #5548ea 0%, var(--lp-accent) 62%);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: var(--lp-highlight), var(--lp-shadow-accent);
+  color: #fff;
+}
+/* Top-edge highlight catching light above the fill. */
+.lp-btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.4);
+}
+/* A brief sheen sweeping across on hover — clipped, so no layout shift. */
+.lp-btn-primary::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 42%;
+  left: 0;
+  background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+  transform: translateX(-160%) skewX(-14deg);
+  transition: transform 0.55s var(--lp-ease);
+  pointer-events: none;
+}
+.lp-btn-primary:hover {
+  background: linear-gradient(180deg, #4c40e4 0%, var(--lp-accent-hover) 62%);
+  box-shadow: var(--lp-highlight), var(--lp-shadow-accent-hover);
+  transform: translateY(-1px);
+}
+.lp-btn-primary:hover::after {
+  transform: translateX(380%) skewX(-14deg);
+}
+.lp-btn-primary:active {
+  background: var(--lp-accent-hover);
+  box-shadow: var(--lp-shadow-accent-press);
+  transform: translateY(0);
+}
+.lp-btn-primary:disabled,
+.lp-btn-primary[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+.lp-btn-secondary {
+  background: linear-gradient(180deg, #ffffff 0%, var(--lp-paper) 100%);
+  color: var(--lp-ink);
+  border-color: var(--lp-line-2);
+  box-shadow: var(--lp-highlight), var(--lp-shadow-1);
+}
+.lp-btn-secondary:hover {
+  border-color: var(--lp-ink-3);
+  background: linear-gradient(180deg, #ffffff 0%, var(--lp-paper-2) 100%);
+  box-shadow: var(--lp-highlight), var(--lp-shadow-2);
+  transform: translateY(-1px);
+}
+.lp-btn-secondary:active {
+  box-shadow: var(--lp-shadow-1);
+  transform: translateY(0);
+}
+.lp-btn-secondary:disabled,
+.lp-btn-secondary[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: var(--lp-highlight);
+  transform: none;
+}
+.lp-btn-quiet {
+  background: var(--lp-paper);
+  border-color: var(--lp-line);
+  color: var(--lp-ink-2);
+  font-size: 13.5px;
+  min-height: 40px;
+  padding: 8px 14px;
+  box-shadow: none;
+}
+.lp-btn-quiet:hover:not(:disabled) {
+  border-color: var(--lp-ink-3);
+  color: var(--lp-ink);
+  background: var(--lp-paper-2);
+  box-shadow: var(--lp-shadow-1);
+}
+.lp-btn-quiet:active:not(:disabled) {
+  box-shadow: none;
+}
+.lp-btn-quiet:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+/* Icon-paired compact button (the ticker's Play/Pause/Restart): declared
+   after `.lp-btn-quiet` so it wins the cascade and can size down without
+   touching the 40–44px targets used by every other control. */
+.lp-btn-with-icon {
+  min-height: 36px;
+  padding: 6px 11px;
+  gap: 6px;
+  font-size: 13px;
+}
+.lp-btn-with-icon svg {
+  width: 14px;
+  height: 14px;
+}
+.lp-btn-lg {
+  font-size: 16px;
+  padding: 12px 22px;
+  min-height: 48px;
+}
+.lp-btn-block {
+  width: 100%;
+}
+
+.lp-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--lp-line);
+  border-radius: 10px;
+  background: var(--lp-paper);
+  color: var(--lp-ink);
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: var(--lp-highlight), var(--lp-shadow-1);
+  transition: border-color 0.15s var(--lp-ease), box-shadow 0.18s var(--lp-ease), background-color 0.15s var(--lp-ease);
+}
+.lp-icon-btn:hover {
+  border-color: var(--lp-ink-3);
+  background: var(--lp-paper-2);
+}
+.lp-icon-btn:active {
+  box-shadow: none;
+  background: var(--lp-line);
+}
+.lp-icon-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ---------------------------------------------------------------- navigation */
+
+.lp-nav {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--lp-paper);
+  border-bottom: 1px solid var(--lp-line);
+  box-shadow: 0 1px 0 rgba(20, 22, 27, 0.02), 0 8px 24px -20px rgba(20, 22, 27, 0.25);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.lp-nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lp-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  color: var(--lp-ink);
+  min-height: 44px;
+}
+.lp-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--lp-accent);
+  color: #fff;
+  font-family: var(--lp-display);
+  font-size: 17px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.lp-brand-name {
+  font-family: var(--lp-display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.lp-nav-links {
+  display: none;
+  gap: 2px;
+  margin-left: 12px;
+}
+.lp-nav-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: var(--lp-ink-2);
+  font-size: 14.5px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.lp-nav-links a:hover {
+  color: var(--lp-ink);
+  background: var(--lp-paper-2);
+}
+/* Current section: filled pill + weight, so the state is not colour alone. */
+.lp-nav-links a[aria-current="true"],
+.lp-drawer-links a[aria-current="true"] {
+  color: var(--lp-accent);
+  background: var(--lp-accent-soft);
+  font-weight: 600;
+}
+
+.lp-nav-actions {
+  display: none;
+  margin-left: auto;
+}
+
+.lp-nav-toggle {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--lp-line);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #ffffff 0%, var(--lp-paper) 100%);
+  color: var(--lp-ink);
+  cursor: pointer;
+  box-shadow: var(--lp-highlight), var(--lp-shadow-1);
+  transition: border-color 0.15s var(--lp-ease), background-color 0.15s var(--lp-ease), box-shadow 0.18s var(--lp-ease);
+}
+.lp-nav-toggle:hover {
+  border-color: var(--lp-ink-3);
+  background: var(--lp-paper-2);
+}
+.lp-nav-toggle:active {
+  box-shadow: none;
+  background: var(--lp-line);
+}
+/* Centering wrapper for the menu icon; the icon itself carries the glyph. */
+.lp-burger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 900px) {
+  .lp-nav-links,
+  .lp-nav-actions {
+    display: flex;
+  }
+  .lp-nav-toggle {
+    display: none;
+  }
+}
+
+.lp-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 22, 27, 0.45);
+  z-index: 40;
+}
+
+.lp-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(320px, 88vw);
+  z-index: 50;
+  background: var(--lp-paper);
+  border-left: 1px solid var(--lp-line);
+  box-shadow: var(--lp-shadow-3);
+  padding: 14px;
+  padding-right: max(14px, env(safe-area-inset-right, 0px));
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transform: translateX(102%);
+  visibility: hidden;
+  transition: transform 0.22s var(--lp-ease), visibility 0s linear 0.22s;
+}
+.lp-drawer[data-open="true"] {
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform 0.22s var(--lp-ease), visibility 0s linear 0s;
+}
+.lp-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.lp-drawer-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lp-ink-3);
+}
+.lp-drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lp-drawer-links a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--lp-ink);
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.lp-drawer-links a:hover {
+  background: var(--lp-paper-2);
+}
+
+/* --------------------------------------------------------------------- hero */
+
+.lp-hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--lp-line);
+  /* Its own field is composed against plain paper, and the gutter backdrop
+     runs behind it: an explicit paper fill keeps the two layers separate —
+     paint only, the hero's box is unchanged. */
+  background: var(--lp-paper);
+}
+
+/* Decorative layered field behind the hero content. Absolutely positioned
+   (out of flow), inert to the pointer, and aria-hidden: it can never affect
+   the hero's sizing or block a click. It sits *behind* the content (z 0):
+   the opaque scene panel and ticker occlude it, while the grid, lattice,
+   glows and the fixture chain compose the gutters and the open bands of the
+   hero — the layer itself never sits on top of text or controls. Opacity is
+   carried by the elements, not by the layer, so each decoration can be
+   tuned on its own. */
+.lp-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+@media (max-width: 1023.98px) {
+  /* Stacked layouts: the copy spans the full width over the field, so the
+     decoration eases back — the grid, the lattice and the glows stay (they
+     are hairline texture), while the labelled fixture chain and the edge-set
+     line are dropped: at the stacked zoom they would cross the headline
+     itself, and the ticker below already carries the example in words. */
+  .lp-hero-bg {
+    opacity: 0.6;
+  }
+  .lp-bg-fixture,
+  .lp-bg-matrix {
+    display: none;
+  }
+}
+.lp-hero-bg-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* Fine technical grid: the same line colour as the page's own rules, so it
+   reads as paper texture rather than as a second design. */
+.lp-bg-grid {
+  opacity: 0.55;
+}
+/* Ornamental lattice spanning the whole hero: hairline connections with a
+   staggered draw-in and two travelling signals, so the centre and the left
+   read as one continuous computational surface rather than unused paper.
+   Purely decorative — no labels, no states, no data claim. */
+.lp-bg-mesh-edge {
+  stroke: var(--lp-line-2);
+  stroke-width: 1;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: lp-bg-draw 1.2s var(--lp-ease) backwards;
+  animation-delay: calc(0.4s + var(--i, 0) * 0.05s);
+}
+.lp-bg-mesh-node {
+  fill: var(--lp-line-2);
+}
+/* Travelling signals in the backdrop are the accent's only appearance here:
+   eased back so a moving dash reads as life, not as an alert. */
+.lp-bg-signal {
+  opacity: 0.5;
+  stroke-width: 2.5;
+}
+/* The real fixture graph: the same topology, states and travelling signal as
+   the scene player's Vertex Cover scene, eased back to background strength
+   and drawn as one weaves-through-the-composition chain. */
+.lp-bg-fixture {
+  opacity: 0.6;
+}
+/* A touch of the topic's own mathematics, read off the fixture's edge set. */
+.lp-bg-matrix {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  fill: var(--lp-ink-3);
+  opacity: 0.55;
+}
+/* Progressive draw: each edge's dash runs the whole (pathLength-normalised)
+   line, offset-hidden at first and animated in with a stagger. The base state
+   is "drawn", so reduced motion (animation: none) shows the finished graph. */
+.lp-bg-edge {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: lp-bg-draw 1.5s var(--lp-ease) backwards;
+  animation-delay: calc(var(--i, 0) * 0.28s);
+}
+@keyframes lp-bg-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+/* Nodes illuminate in sequence: the state transition carries a stagger. */
+.lp-bg-node .lp-node-ring {
+  transition: fill 0.35s var(--lp-ease), stroke 0.35s var(--lp-ease), stroke-width 0.35s var(--lp-ease),
+    stroke-dasharray 0.35s var(--lp-ease);
+  transition-delay: calc(var(--i, 0) * 0.16s);
+}
+/* The backdrop draws at hero scale, so its labels sit between the scene
+   player's (13px at panel scale) and the thumbs'. */
+.lp-bg-fixture .lp-node-label {
+  font-size: 14px;
+}
+/* Restrained accent light on the elements the solver is actively picking. */
+.lp-bg-node.lp-node-active .lp-node-ring,
+.lp-bg-node.lp-node-selected .lp-node-ring {
+  filter: drop-shadow(0 0 5px rgba(29, 78, 216, 0.35));
+}
+/* Pausing freezes the CSS half of the animation in step with the timers. */
+.lp-hero-bg[data-paused="true"] .lp-bg-edge,
+.lp-hero-bg[data-paused="true"] .lp-bg-mesh-edge,
+.lp-hero-bg[data-paused="true"] .lp-signal {
+  animation-play-state: paused;
+}
+
+.lp-hero-visual {
+  min-width: 0;
+  min-height: 0;
+}
+
+.lp-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 16px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 40px;
+}
+
+.lp-hero-title {
+  font-family: var(--lp-display);
+  font-size: clamp(2rem, 6.2vw, 3.15rem);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  margin: 0 0 16px;
+  text-wrap: balance;
+  max-width: 20ch;
+}
+.lp-hero-lede {
+  margin: 0 0 24px;
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.65;
+  color: var(--lp-ink-2);
+  max-width: 56ch;
+  text-wrap: pretty;
+}
+.lp-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.lp-hero-note {
+  margin: 20px 0 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--lp-ink-3);
+  max-width: 54ch;
+}
+
+/* Example-in-motion ticker: the legible half of the hero backdrop. Its
+   height is fixed (head row + caption bay + table bay), so a table gaining
+   rows as the solver advances never resizes the hero. */
+.lp-hero-ticker {
+  margin-top: 24px;
+  max-width: 440px;
+  border: 1px solid var(--lp-line);
+  border-radius: var(--lp-radius-lg);
+  background: var(--lp-paper);
+  box-shadow: var(--lp-highlight), var(--lp-shadow-2);
+  padding: 14px 16px;
+}
+.lp-hero-ticker-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.lp-hero-ticker-label {
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lp-ink-3);
+}
+.lp-hero-ticker-controls {
+  display: flex;
+  gap: 6px;
+}
+.lp-hero-ticker-caption {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--lp-ink-2);
+  min-height: 3em;
+}
+.lp-hero-ticker-tablewrap {
+  margin-top: 6px;
+  /* Bay sized for the complete table: header (36px) + the three progress rows
+     (38–39px each = ~116px), plus slack for font-metric differences. Measured
+     full height is 151px, so 156px holds it at every breakpoint without ever
+     clipping. The bay is fixed, so gaining a row cannot move anything around
+     it. */
+  height: 156px;
+  overflow: hidden;
+}
+/* The values are short; letting headers wrap instead keeps every row one
+   line high, which is what makes the bay height predictable. */
+.lp-hero-ticker-table th {
+  white-space: nowrap;
+}
+.lp-hero-ticker-table th,
+.lp-hero-ticker-table td {
+  padding: 6px 8px;
+  height: 30px;
+}
+.lp-hero-ticker-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+/* Cells fill in left to right when their row appears. */
+.lp-ticker-cell {
+  animation: lp-ticker-cell-in 0.45s var(--lp-ease) both;
+  animation-delay: calc(var(--c, 0) * 0.12s);
+}
+@keyframes lp-ticker-cell-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .lp-hero-inner {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: 56px;
+    align-items: center;
+    /* 36px less vertical padding than the original 72/80, given to keeping
+       the panel's controls above a 900px fold: the hero is taller than that
+       viewport either way, so the whitespace around the copy can afford it. */
+    padding: 52px 24px 64px;
+  }
+}
+
+/* ------------------------------------------------------ scene player (hero) */
+
+/* The scene panel is a fixed-height viewport, not a content-sized box: its
+   height is set per breakpoint (never a single hardcoded value), and the
+   panel's variable-length content scrolls inside it. This is the structural
+   fix that decouples the hero's dimensions from the graph, the step text and
+   the step table — changing scene or step can no longer resize the hero. */
+.lp-scene {
+  --lp-scene-h: 780px;
+  --lp-scene-canvas-h: 320px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: var(--lp-scene-h);
+}
+@media (min-width: 640px) {
+  .lp-scene {
+    --lp-scene-h: 700px;
+    --lp-scene-canvas-h: 320px;
+  }
+}
+@media (min-width: 1024px) {
+  .lp-scene {
+    --lp-scene-h: 804px;
+    --lp-scene-canvas-h: 380px;
+  }
+}
+@media (min-width: 1280px) {
+  /* Only the canvas grows here: the step region at 161px already clears the
+     tallest scene's 136px of step text, and the extra scene height would put
+     the controls below a 900px fold for no gain. */
+  .lp-scene {
+    --lp-scene-h: 804px;
+    --lp-scene-canvas-h: 400px;
+  }
+}
+
+.lp-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.lp-tab {
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--lp-ink-2);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 8px 12px;
+  min-height: 40px;
+  cursor: pointer;
+  transition: background-color 0.15s var(--lp-ease), color 0.15s var(--lp-ease), border-color 0.15s var(--lp-ease),
+    box-shadow 0.18s var(--lp-ease);
+}
+.lp-tab:hover {
+  color: var(--lp-ink);
+  background: var(--lp-paper-2);
+}
+/* Selected tab lifts: the fill alone marks it, the shadow says "raised". */
+.lp-tab-active {
+  color: var(--lp-accent);
+  background: var(--lp-accent-soft);
+  border-color: var(--lp-accent-line);
+  box-shadow: var(--lp-highlight), var(--lp-shadow-1);
+}
+
+.lp-scene-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: 16px;
+  border: 1px solid var(--lp-line);
+  border-radius: var(--lp-radius-lg);
+  background: var(--lp-paper);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 56px);
+  box-shadow: var(--lp-highlight), var(--lp-shadow-2);
+}
+@media (min-width: 640px) {
+  .lp-scene-panel {
+    padding: 20px;
+  }
+}
+/* 14→12px gaps at desktop: the 6px reclaimed goes to the scroll region so
+   the step counter, title and body all fit a 900px-tall viewport without
+   internal scrolling. The controls keep their position at the panel's foot. */
+@media (min-width: 1024px) {
+  .lp-scene-panel {
+    gap: 12px;
+  }
+}
+
+/* Title only; reserved at two lines so a long title on a narrow column
+   cannot change the panel's height either. */
+.lp-scene-head {
+  flex: none;
+}
+.lp-scene-title {
+  font-family: var(--lp-display);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+  min-height: 2.4em;
+  text-wrap: balance;
+}
+.lp-scene-caption {
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--lp-line);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--lp-ink-3);
+  max-width: 62ch;
+}
+
+/* The one region whose length legitimately varies: step text and table
+   first (the live content), then caption, key and text descriptions.
+   Fixed siblings bracket it, so whatever it gains in height it takes from
+   itself, never from the hero. */
+.lp-scene-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  align-content: start;
+}
+
+/* The bounded canvas. A flex column rather than a grid: the two instance
+   graphs of a dual scene split the canvas between them (`flex: 1 1 0`),
+   while the mapping connector between the rows keeps its natural height.
+   Stacking the instances at every width — instead of squeezing them into
+   side-by-side columns — is what keeps each graph's labels at a readable
+   size: a four-vertex fixture drawn at the panel's full width sits at near
+   1:1 scale, and the downward mapping arrow reads the same either way. */
+.lp-scene-visual {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: var(--lp-scene-canvas-h);
+  min-height: 0;
+  padding: 10px;
+  border: 1px solid var(--lp-line);
+  border-radius: var(--lp-radius-md);
+  background: #fdfdfb;
+  /* Inset for the paper well, plus a contact shadow so the canvas sits on
+     the panel instead of floating in it. Both are paint-only: neither can
+     change the fixed height this box contributes to the panel. */
+  box-shadow: var(--lp-shadow-inset), 0 1px 2px rgba(20, 22, 27, 0.05), 0 10px 24px -18px rgba(20, 22, 27, 0.35);
+}
+.lp-scene-visual-item,
+.lp-graphwrap {
+  min-width: 0;
+}
+
+/* Inside the bounded canvas the drawing fills its share of the fixed-height
+   box; the viewBox keeps the aspect, so nothing the fixture contains can
+   change the panel's height. Thumbs (SceneThumb) keep their own fixed
+   height, overridden by the more specific `.lp-thumb svg` rule.
+
+   The height chain matters: the item is a flex child with a definite share
+   of the fixed-height canvas, it is itself a flex column, and the wrap
+   takes `flex: 1 1 auto` of it. Without a *definite* wrap height the svg's
+   `flex: 1 1 0` would resolve against an auto-height container — free
+   space 0 — collapsing the canvas to zero height while the labels above it
+   still render, i.e. a graph scene showing text and nothing else. */
+.lp-scene-visual .lp-scene-visual-item {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+}
+.lp-scene-visual .lp-mapping {
+  flex: none;
+  align-self: center;
+}
+.lp-scene-visual .lp-graphwrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.lp-scene-visual .lp-graphlabel {
+  flex: none;
+}
+.lp-scene-visual .lp-graph,
+.lp-scene-visual .lp-tableau {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+}
+
+.lp-graphlabel {
+  margin: 0 0 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--lp-ink-2);
+}
+.lp-graph,
+.lp-tableau {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* mapping connector between the two reduction instances */
+.lp-mapping {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  max-width: 108px;
+}
+.lp-mapping-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--lp-ink-2);
+  text-align: center;
+  text-wrap: balance;
+}
+.lp-mapping-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+/* Marching dashes: the direction of travel is the signal. A static dashed rule
+   when the scene is not flowing, so the connector never reads as a spinner. */
+.lp-mapping-track {
+  display: block;
+  width: 58px;
+  height: 2px;
+  background-image: repeating-linear-gradient(90deg, var(--lp-line-2) 0 5px, transparent 5px 12px);
+  background-size: 12px 2px;
+  background-repeat: repeat-x;
+}
+.lp-mapping[data-flow="on"] .lp-mapping-track {
+  background-image: repeating-linear-gradient(90deg, var(--lp-accent) 0 5px, transparent 5px 12px);
+  animation: lp-flow 0.9s linear infinite;
+}
+.lp-mapping-arrow {
+  font-size: 16px;
+  line-height: 1;
+  color: var(--lp-ink-2);
+}
+@keyframes lp-flow {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -12px;
+  }
+}
+/* Stacked instances at every width: point the connector downwards instead
+   of sideways. Only the paint rotates — the layout box stays horizontal, so
+   the row's height stays predictable — which means the drawn line extends
+   past its box on both ends; the taller margins keep the arrowhead clear of
+   the graph label below it. */
+.lp-scene-visual-dual .lp-mapping-line {
+  transform: rotate(90deg);
+  margin: 26px 0;
+}
+/* Once there is room (≥640px), frame each reduction instance as its own
+   card inside the well: distinct source and target, with the mapping row
+   reading as the bridge between them. Below 640px the frames are dropped —
+   the extra 14px of chrome would cost graph scale where labels are already
+   tightest. Frames are borders and paint: the canvas keeps its fixed height. */
+@media (min-width: 640px) {
+  .lp-scene-visual-dual .lp-scene-visual-item {
+    border: 1px solid var(--lp-line);
+    border-radius: var(--lp-radius-sm);
+    background: var(--lp-paper);
+    padding: 8px 10px 6px;
+    box-shadow: var(--lp-shadow-inset);
+  }
+  /* One line for "f(G, k) = (G, n − k)" instead of a wrapped two-liner. */
+  .lp-scene-visual-dual .lp-mapping {
+    max-width: 170px;
+  }
+}
+/* Small screens: claw back vertical chrome inside the canvas so the drawn
+   graph — and with it every node label — gets the space instead. The
+   connector's margins stay at 26px: its paint is rotated, so it reaches
+   ~32px past its layout box and those margins are what keep it clear of the
+   mapping label above and the graph label below. */
+@media (max-width: 639.98px) {
+  .lp-scene-visual {
+    padding: 8px;
+    gap: 12px;
+  }
+  .lp-graphlabel {
+    margin-bottom: 4px;
+    font-size: 12px;
+  }
+  .lp-scene-visual-dual .lp-mapping {
+    max-width: 150px;
+  }
+}
+
+/* graph drawing */
+.lp-edge {
+  stroke: var(--lp-node-stroke);
+  stroke-width: 2;
+  transition: stroke 0.3s var(--lp-ease), stroke-width 0.3s var(--lp-ease), stroke-dasharray 0.3s var(--lp-ease);
+}
+.lp-edge-active {
+  stroke: var(--lp-active);
+  stroke-width: 3.5;
+}
+.lp-edge-covered {
+  stroke: var(--lp-selected);
+  stroke-width: 2.5;
+}
+.lp-edge-uncovered {
+  stroke: var(--lp-uncovered);
+  stroke-width: 2.5;
+  stroke-dasharray: 5 5;
+}
+.lp-edge-cut {
+  stroke: var(--lp-cut);
+  stroke-width: 3.5;
+}
+.lp-edge-uncut {
+  stroke: var(--lp-node-stroke);
+  stroke-dasharray: 2 4;
+}
+
+.lp-signal {
+  stroke: var(--lp-accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 5 40;
+  animation: lp-travel 1.3s linear infinite;
+}
+
+.lp-node-ring {
+  fill: var(--lp-node-fill);
+  stroke: var(--lp-node-stroke);
+  stroke-width: 2;
+  transition: fill 0.3s var(--lp-ease), stroke 0.3s var(--lp-ease), stroke-width 0.3s var(--lp-ease),
+    stroke-dasharray 0.3s var(--lp-ease);
+}
+.lp-node-label {
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--lp-ink);
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+.lp-node-mark {
+  fill: none;
+  stroke: var(--lp-side-a);
+  stroke-width: 1.5;
+  opacity: 0.65;
+}
+.lp-node-active .lp-node-ring {
+  fill: var(--lp-active-fill);
+  stroke: var(--lp-active);
+}
+.lp-node-selected .lp-node-ring,
+.lp-node-covered .lp-node-ring {
+  fill: var(--lp-selected-fill);
+  stroke: var(--lp-selected);
+  stroke-width: 3;
+}
+.lp-node-uncovered .lp-node-ring {
+  fill: var(--lp-uncovered-fill);
+  stroke: var(--lp-uncovered);
+  stroke-dasharray: 4 3;
+}
+.lp-node-cut .lp-node-ring {
+  fill: var(--lp-cut-fill);
+  stroke: var(--lp-cut);
+  stroke-width: 3;
+}
+.lp-node-side_a .lp-node-ring {
+  fill: var(--lp-side-a-fill);
+  stroke: var(--lp-side-a);
+  stroke-width: 3;
+}
+.lp-node-side_b .lp-node-ring {
+  fill: var(--lp-side-b-fill);
+  stroke: var(--lp-side-b);
+  stroke-width: 3;
+  stroke-dasharray: 4 3;
+}
+
+/* tableau drawing */
+.lp-cell rect {
+  fill: var(--lp-paper-2);
+  stroke: var(--lp-line-2);
+  stroke-width: 1;
+  transition: fill 0.3s var(--lp-ease), stroke 0.3s var(--lp-ease), stroke-width 0.3s var(--lp-ease);
+}
+.lp-cell-initial rect {
+  fill: var(--lp-side-a-fill);
+}
+/* Blank tape cells get a dashed outline so a run of blanks reads as "empty
+   tape" rather than as missing or unrendered cells. */
+.lp-cell-blank rect {
+  stroke-dasharray: 3 3;
+}
+.lp-cell-window rect {
+  stroke: var(--lp-accent);
+  stroke-width: 2.5;
+}
+.lp-cell-accept rect {
+  fill: var(--lp-selected-fill);
+  stroke: var(--lp-selected);
+  stroke-width: 2.5;
+}
+.lp-cell-symbol {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  fill: var(--lp-ink);
+  text-anchor: middle;
+}
+.lp-cell-head {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--lp-accent);
+  text-anchor: middle;
+}
+.lp-cell-caret {
+  fill: var(--lp-accent);
+}
+.lp-tableau-axis {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: var(--lp-ink-3);
+  text-anchor: middle;
+}
+
+/* legend + text equivalents */
+.lp-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.lp-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--lp-ink-2);
+}
+/* Circular, matching the drawn node, so the key never reads as a checkbox. */
+.lp-swatch {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid var(--lp-node-stroke);
+  background: var(--lp-node-fill);
+  flex-shrink: 0;
+}
+.lp-swatch-active {
+  border-color: var(--lp-active);
+  background: var(--lp-active-fill);
+}
+.lp-swatch-selected,
+.lp-swatch-covered {
+  border-color: var(--lp-selected);
+  background: var(--lp-selected-fill);
+}
+.lp-swatch-uncovered {
+  border-color: var(--lp-uncovered);
+  background: var(--lp-uncovered-fill);
+  border-style: dashed;
+}
+.lp-swatch-cut {
+  border-color: var(--lp-cut);
+  background: var(--lp-cut-fill);
+}
+.lp-swatch-uncut {
+  border-color: var(--lp-node-stroke);
+  border-style: dashed;
+}
+.lp-swatch-side_a {
+  border-color: var(--lp-side-a);
+  background: var(--lp-side-a-fill);
+}
+.lp-swatch-side_b {
+  border-color: var(--lp-side-b);
+  background: var(--lp-side-b-fill);
+  border-style: dashed;
+}
+
+.lp-details {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--lp-ink-3);
+}
+.lp-details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.lp-details p {
+  margin: 6px 0 0;
+}
+.lp-scene-meta {
+  display: grid;
+  gap: 10px;
+}
+.lp-graph-text {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+}
+.lp-graph-text li {
+  line-height: 1.5;
+}
+.lp-tableau-text {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.lp-annotations {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--lp-ink-2);
+}
+.lp-annotations li {
+  margin-bottom: 4px;
+}
+
+/* step text, table and controls */
+/* The step block leads the scroll region (visible first at a short viewport),
+   so it needs no rule of its own; the caption that follows it takes one. */
+.lp-scene-step {
+  padding-top: 2px;
+}
+.lp-step-counter {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lp-ink-3);
+}
+.lp-step-title {
+  margin: 0 0 6px;
+  font-size: 15.5px;
+  font-weight: 700;
+}
+.lp-step-body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--lp-ink-2);
+  max-width: 66ch;
+  text-wrap: pretty;
+}
+
+.lp-steptable-wrap {
+  margin-top: 12px;
+  overflow-x: auto;
+  /* Framed surface: the step table is a document, not prose — its own
+     paper, rule and radius separate it from the step text above it. */
+  background: #fff;
+  border: 1px solid var(--lp-line);
+  border-radius: var(--lp-radius-sm);
+  box-shadow: var(--lp-shadow-inset);
+  padding: 8px 10px 4px;
+}
+.lp-steptable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+}
+.lp-steptable caption {
+  text-align: left;
+  font-size: 12.5px;
+  color: var(--lp-ink-3);
+  padding-bottom: 6px;
+}
+.lp-steptable th,
+.lp-steptable td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--lp-line);
+}
+.lp-steptable th {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--lp-ink-3);
+}
+.lp-row-current {
+  background: var(--lp-accent-soft);
+}
+.lp-row-current td {
+  font-weight: 600;
+  color: var(--lp-ink);
+}
+.lp-row-current td:first-child::before {
+  content: "▸ ";
+  color: var(--lp-accent);
+}
+.lp-steptable-note {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--lp-ink-3);
+}
+
+/* A toolbar, not a row of links: its own tinted surface and rule so the
+   controls read as the panel's instrument strip, and the scene's quiet
+   buttons get the full 44px target (the strip is `flex: none`, so this
+   costs the scroll region the height, never the hero). */
+.lp-scene-controls {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  border-top: 1px solid var(--lp-line-2);
+  border-radius: var(--lp-radius-sm);
+  background: linear-gradient(180deg, var(--lp-paper-2), rgba(20, 22, 27, 0.03));
+  box-shadow: var(--lp-highlight);
+  padding: 12px 10px 10px;
+}
+.lp-scene-controls .lp-btn-quiet {
+  min-height: 44px;
+}
+
+/* ------------------------------------------------------------- topic rail */
+
+.lp-rail {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  scroll-margin-top: 76px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid;
+  gap: 12px;
+}
+.lp-rail-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lp-ink-3);
+}
+.lp-rail-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.lp-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--lp-line-2);
+  border-radius: 999px;
+  background: var(--lp-paper);
+  color: var(--lp-ink);
+  font-size: 14.5px;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: var(--lp-shadow-1);
+  transition: border-color 0.15s var(--lp-ease), background-color 0.15s var(--lp-ease), color 0.15s var(--lp-ease),
+    box-shadow 0.18s var(--lp-ease), transform 0.18s var(--lp-ease);
+}
+.lp-chip:hover {
+  border-color: var(--lp-accent);
+  color: var(--lp-accent);
+  background: var(--lp-accent-soft);
+  box-shadow: var(--lp-shadow-2);
+  transform: translateY(-1px);
+}
+.lp-rail-note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--lp-ink-3);
+  max-width: 70ch;
+}
+
+/* ---------------------------------------------------------------- sections */
+
+.lp-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 64px 16px;
+  scroll-margin-top: 76px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  border-top: 1px solid var(--lp-line);
+}
+/* The skip link targets <main>, whose document top is exactly the sticky
+   nav's height. Without an offset, activating it scrolls main's first 65px
+   *under* the nav; with one, the jump resolves to the top of the document,
+   where the nav and the hero already clear each other. Main is also the
+   positioning context for the gutter backdrop below. */
+#lp-main {
+  scroll-margin-top: 76px;
+  /* Positioning context for the gutter backdrop below. */
+  position: relative;
+}
+
+/* ------------------------------------------------------- gutter backdrop
+
+   The sections below the hero are a 1200px centred column, so on wide
+   viewports their side margins are bare paper. `.lp-main-bg` paints that
+   space — a dotted technical grid over all of main, soft accent glows, and
+   a sparse graph network in each outer gutter — as one absolutely positioned
+   layer. It carries no content, takes no pointer events, and the real
+   children of main sit above it (z-index 1), so it can never change the
+   column's width, intercept a click, or paint over text. The layer spans
+   main's box and clips to it, so no decoration can overflow the page. */
+.lp-main-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* Soft accent lighting hugging the outer edges — light, not a panel. */
+.lp-main-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(300px 420px at 2% 14%, rgba(67, 56, 202, 0.05), transparent 70%),
+    radial-gradient(340px 460px at 98% 40%, rgba(29, 78, 216, 0.045), transparent 72%),
+    radial-gradient(280px 400px at 1% 74%, rgba(67, 56, 202, 0.04), transparent 70%);
+}
+/* The dotted technical grid: small accent-derived points on a 26px rhythm.
+   The centre fade is computed against the 1200px column — the dots run at
+   full strength in the real gutters and ease to a third behind the content,
+   where they read as paper texture. Where the viewport is narrower than the
+   column the calc() stops clamp to the edges and the whole field sits at
+   that third strength: no breakpoint needed to keep it quiet on small
+   screens. */
+.lp-main-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(67, 56, 202, 0.2) 1px, transparent 1.6px);
+  background-size: 26px 26px;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    #000 0,
+    #000 calc(50% - 690px),
+    rgba(0, 0, 0, 0.33) calc(50% - 600px),
+    rgba(0, 0, 0, 0.33) calc(50% + 600px),
+    #000 calc(50% + 690px),
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    #000 0,
+    #000 calc(50% - 690px),
+    rgba(0, 0, 0, 0.33) calc(50% - 600px),
+    rgba(0, 0, 0, 0.33) calc(50% + 600px),
+    #000 calc(50% + 690px),
+    #000 100%
+  );
+}
+/* Gutter networks: sized to the real gutter plus a 72px overlap that the
+   mask fades out, so a strip always ends before it can reach the column.
+   Hidden until a genuine gutter exists (≥1360px); below that the dots
+   alone carry the surface, and squeezing nodes into the content column is
+   exactly what must not happen. */
+.lp-main-net {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: none;
+  width: min(240px, calc(max(0px, (100% - 1200px)) / 2 + 72px));
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 72px), transparent 100%);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 72px), transparent 100%);
+}
+.lp-main-net--left {
+  left: 0;
+}
+.lp-main-net--right {
+  right: 0;
+  -webkit-mask-image: linear-gradient(270deg, #000 calc(100% - 72px), transparent 100%);
+  mask-image: linear-gradient(270deg, #000 calc(100% - 72px), transparent 100%);
+}
+@media (min-width: 1360px) {
+  .lp-main-net {
+    display: block;
+  }
+}
+.lp-main-net svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* The extra nodes/edges only join on the widest screens, so medium desktops
+   get a sparser network before the strips disappear entirely. */
+.lp-main-net-extra {
+  display: none;
+}
+@media (min-width: 1560px) {
+  .lp-main-net-extra {
+    display: inline;
+  }
+}
+/* Same progressive draw as the hero backdrop's lattice, staggered per edge;
+   the base state is "drawn", so reduced motion (animation: none) shows the
+   finished network. */
+.lp-main-edge {
+  stroke: var(--lp-line-2);
+  stroke-width: 1;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: lp-bg-draw 1.4s var(--lp-ease) backwards;
+  animation-delay: calc(var(--i, 0) * 0.09s);
+}
+.lp-main-node {
+  fill: var(--lp-line-2);
+}
+/* A couple of nodes per tile breathe with a soft accent highlight — the
+   "occasional node life" of the canvas, slow enough to stay subordinate. */
+.lp-main-node-hi {
+  fill: var(--lp-accent);
+  opacity: 0.6;
+  animation: lp-main-pulse 6.5s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * 1.7s);
+}
+@keyframes lp-main-pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.22;
+  }
+}
+/* The travelling signal is the hero's own, eased back and slowed right down;
+   each side paces it differently so the two strips never pulse in step. */
+.lp-main-signal {
+  opacity: 0.45;
+  stroke-width: 2;
+  animation-duration: 3.8s;
+}
+.lp-main-net--right .lp-main-signal {
+  animation-duration: 5.4s;
+}
+/* The real content paints above the decorative layer. Positioned + raised
+   so text, cards and rules are never overdrawn by the backdrop; the hero is
+   already positioned and comes later in the tree, so it stacks above too. */
+.lp-main > .lp-rail,
+.lp-main > .lp-section {
+  position: relative;
+  z-index: 1;
+}
+
+/* Anchor navigation eases into place while the landing page is mounted.
+   The selector walks the real document shape (html > body > #root > .lp) — an
+   earlier `html:has(> #root > .lp)` never matched, so section links jumped
+   instantly. It is scoped to the landing page so route navigation (/chat) is
+   never affected, and `:has()` failing outright degrades to the native jump. */
+html:has(> body > #root > .lp) {
+  scroll-behavior: smooth;
+}
+
+/* Section entrance: content is only ever *marked* pending by JS, so without
+   the script (or after the fallback timer) everything is simply visible. */
+.lp [data-reveal="pending"] {
+  opacity: 0.001;
+  transform: translateY(12px);
+}
+.lp [data-reveal="shown"] {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.5s var(--lp-ease), transform 0.5s var(--lp-ease);
+}
+@media (min-width: 1024px) {
+  .lp-section {
+    padding: 88px 24px;
+  }
+}
+
+.lp-section-head {
+  margin-bottom: 32px;
+  max-width: 68ch;
+}
+.lp-section-head h2 {
+  font-family: var(--lp-display);
+  font-size: clamp(1.5rem, 3.2vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  margin: 0 0 10px;
+  text-wrap: balance;
+}
+.lp-section-head p {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--lp-ink-2);
+  text-wrap: pretty;
+}
+
+.lp-status {
+  font-size: 14.5px;
+  color: var(--lp-ink-2);
+}
+.lp-status-error {
+  border: 1px solid var(--lp-line-2);
+  border-radius: 12px;
+  padding: 16px;
+  background: var(--lp-paper-2);
+  max-width: 68ch;
+}
+.lp-status-error p {
+  margin: 0 0 12px;
+}
+.lp-status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ------------------------------------------------------- interactive demo */
+
+.lp-demo-panel {
+  display: grid;
+  gap: 12px;
+}
+.lp-demo-caption {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--lp-ink-2);
+  max-width: 78ch;
+}
+.lp-demo-frame {
+  min-width: 0;
+  border: 1px solid var(--lp-line);
+  border-radius: var(--lp-radius-lg);
+  background: var(--lp-paper);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 48px);
+  box-shadow: var(--lp-highlight), var(--lp-shadow-2);
+  padding: 16px;
+}
+/* Harmonise the chat's own trace block with the landing surface. */
+.lp-demo-frame .trace-block {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+.lp-demo-frame .graph-viewport {
+  height: 320px;
+  border-radius: 10px;
+}
+.lp-demo-frame .btn {
+  background: var(--lp-paper-2);
+  border-color: var(--lp-line);
+  color: var(--lp-ink-2);
+}
+.lp-demo-frame .btn:hover:not(:disabled) {
+  background: var(--lp-accent-soft);
+  border-color: var(--lp-accent-line);
+  color: var(--lp-accent);
+}
+.lp-demo-frame .btn:disabled {
+  opacity: 0.45;
+}
+.lp-demo-note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--lp-ink-3);
+}
+.lp-demo-note code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--lp-paper-2);
+  border: 1px solid var(--lp-line);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+/* ------------------------------------------------------------ topic cards */
+
+.lp-topic-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+@media (min-width: 780px) {
+  .lp-topic-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.lp-topic-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--lp-line);
+  border-radius: var(--lp-radius-lg);
+  background: var(--lp-paper);
+  box-shadow: var(--lp-highlight), var(--lp-shadow-1);
+  overflow: hidden;
+  transition: box-shadow 0.2s var(--lp-ease), transform 0.2s var(--lp-ease), border-color 0.2s var(--lp-ease);
+}
+/* Hovering or keyboard-focusing anything inside lifts the whole card, so
+   "this card is actionable" reads before the pointer even reaches the link. */
+.lp-topic-card:hover,
+.lp-topic-card:focus-within {
+  border-color: var(--lp-line-2);
+  box-shadow: var(--lp-highlight), var(--lp-shadow-2);
+  transform: translateY(-2px);
+}
+.lp-topic-figure {
+  padding: 16px;
+  border-bottom: 1px solid var(--lp-line);
+  background: var(--lp-paper-2);
+}
+.lp-topic-figcaption {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--lp-ink-3);
+}
+.lp-topic-nofigure {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--lp-ink-3);
+}
+.lp-topic-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  flex: 1;
+}
+.lp-topic-title {
+  margin: 0;
+  font-family: var(--lp-display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.lp-topic-desc {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--lp-ink-2);
+}
+.lp-topic-question {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--lp-ink);
+  border-left: 3px solid var(--lp-accent-line);
+  padding-left: 12px;
+}
+.lp-topic-question-label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lp-ink-3);
+  margin-bottom: 2px;
+}
+.lp-topic-action {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.lp-thumb svg {
+  display: block;
+  width: auto;
+  height: 184px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.lp-thumb .lp-graphlabel {
+  display: none;
+}
+
+/* --------------------------------------------------------- how it works */
+
+.lp-stages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px 40px;
+  counter-reset: none;
+}
+@media (min-width: 780px) {
+  .lp-stages {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.lp-stage {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 12px;
+  border-top: 2px solid var(--lp-ink);
+  padding-top: 14px;
+}
+.lp-stage-number {
+  font-family: var(--lp-display);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--lp-accent);
+}
+.lp-stage-title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+}
+.lp-stage-body {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--lp-ink-2);
+  max-width: 60ch;
+}
+.lp-how-note {
+  margin: 32px 0 0;
+  padding: 18px 20px;
+  border: 1px solid var(--lp-line);
+  border-radius: var(--lp-radius-md);
+  background: var(--lp-paper-2);
+  box-shadow: var(--lp-shadow-1);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--lp-ink-2);
+  display: grid;
+  gap: 10px;
+  max-width: none;
+}
+.lp-how-note span {
+  max-width: 78ch;
+}
+
+/* ------------------------------------------------------------ capabilities */
+
+.lp-capabilities {
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px 40px;
+}
+@media (min-width: 780px) {
+  .lp-capabilities {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.lp-capability {
+  border-top: 1px solid var(--lp-line-2);
+  padding-top: 14px;
+}
+.lp-capability dt {
+  font-size: 15.5px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.lp-capability dd {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--lp-ink-2);
+  max-width: 58ch;
+}
+
+/* ------------------------------------------------------------- closing CTA */
+
+.lp-closing {
+  border-top: 1px solid var(--lp-line);
+  text-align: center;
+}
+.lp-closing h2 {
+  font-family: var(--lp-display);
+  font-size: clamp(1.75rem, 4.4vw, 2.6rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin: 0 auto 12px;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+.lp-closing-lede {
+  margin: 0 auto 28px;
+  font-size: 16.5px;
+  color: var(--lp-ink-2);
+  max-width: 52ch;
+}
+.lp-closing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ------------------------------------------------------------------ footer */
+
+.lp-footer {
+  background: var(--lp-ink);
+  color: #e8e8ea;
+  padding: 48px 16px calc(32px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.lp-footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+}
+@media (min-width: 780px) {
+  .lp-footer-inner {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 40px;
+  }
+}
+.lp-footer .lp-brand {
+  color: #fff;
+}
+.lp-footer .lp-brand-mark {
+  background: var(--lp-accent);
+}
+.lp-footer-note {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #a9adb8;
+  max-width: 52ch;
+}
+.lp-footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lp-footer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #c9cbd2;
+  font-size: 14.5px;
+  text-decoration: none;
+  align-self: flex-start;
+}
+.lp-footer-links a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+/* The shared indigo focus ring is near-invisible on the ink footer; a white
+   ring keeps the same 2px/offset treatment where it can actually be seen. */
+.lp-footer :focus-visible {
+  outline-color: #fff;
+}
+.lp-footer-legal {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(232, 232, 234, 0.18);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #8d919c;
+}
+
+/* ------------------------------------------------------------ small phones */
+
+@media (max-width: 359.98px) {
+  .lp-hero-inner,
+  .lp-section,
+  .lp-rail {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .lp-scene-panel {
+    padding: 12px;
+  }
+  .lp-topic-body {
+    padding: 16px;
+  }
+  .lp-stage {
+    grid-template-columns: 32px minmax(0, 1fr);
+  }
+}
+
+/* ------------------------------------------------------------ reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Section links jump immediately instead of easing. Declared here as well as
+     in the global override so the landing page does not depend on another
+     stylesheet for its reduced-motion behaviour. */
+  html:has(> body > #root > .lp) {
+    scroll-behavior: auto;
+  }
+  .lp-signal,
+  .lp-mapping-track,
+  .lp-bg-edge,
+  .lp-bg-mesh-edge,
+  .lp-main-edge,
+  .lp-main-node-hi,
+  .lp-ticker-cell {
+    animation: none !important;
+  }
+  /* No travelling dashes at all in the decorative layers. The dot grid and
+     the gutter networks themselves are not animation and stay put. */
+  .lp-hero-bg .lp-signal,
+  .lp-main-bg .lp-signal {
+    display: none;
+  }
+  .lp-drawer {
+    transition: none;
+  }
+  /* Hover lifts and the button sheen are motion; the colour/shadow state
+     changes remain, because they carry meaning. */
+  .lp-btn-primary::after {
+    display: none;
+  }
+  .lp-btn-primary:hover,
+  .lp-btn-secondary:hover,
+  .lp-chip:hover,
+  .lp-topic-card:hover,
+  .lp-topic-card:focus-within {
+    transform: none;
+  }
+  .lp [data-reveal="pending"],
+  .lp [data-reveal="shown"] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
