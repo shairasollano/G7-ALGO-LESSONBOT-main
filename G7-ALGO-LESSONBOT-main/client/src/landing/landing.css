@@ -52,8 +52,7 @@
   --lp-side-b-fill: #dfdfd9;
 
   /* Clean sans-serif typography */
-  --lp-display: Inter, ui-sans-serif, system-ui,
-    -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --lp-display: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   --lp-ease: cubic-bezier(0.2, 0, 0, 1);
 
@@ -301,27 +300,6 @@
 }
 
 /* ---------------------------------------------------------------- navigation */
-
-.lp-nav {
-  position: sticky;
-  top: 0;
-  z-index: 30;
-  background: var(--lp-paper);
-  border-bottom: 1px solid var(--lp-line);
-  box-shadow: 0 1px 0 rgba(20, 22, 27, 0.02), 0 8px 24px -20px rgba(20, 22, 27, 0.25);
-  padding-top: env(safe-area-inset-top, 0px);
-}
-
-.lp-nav-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px 16px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
 
 .lp-brand {
   display: inline-flex;
@@ -2102,26 +2080,10 @@ html:has(> body > #root > .lp) {
 
 /* OVERRIDE SECTION */
 
-/* AlgoTutor brand assets */
+/* Compact brand lockup */
 .lp-brand {
   gap: 8px;
   flex-shrink: 0;
-}
-
-.lp-brand-robot {
-  display: block;
-  width: 32px;
-  height: 34px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-.lp-brand-wordmark {
-  display: block;
-  width: 120px;
-  max-width: 32vw;
-  height: auto;
-  object-fit: contain;
 }
 
 /* Minimal navigation */
@@ -2318,4 +2280,536 @@ html:has(> body > #root > .lp) {
 
 .lp-footer :focus-visible {
   outline-color: var(--lp-focus);
+}
+
+/* =============================================================================
+   CALM UI REFINEMENT — yellow / warm-white / charcoal
+   A simpler visual hierarchy, more generous spacing, and quieter data panels.
+   Kept scoped to .lp so the chat application keeps its own styles.
+   ============================================================================= */
+.lp {
+  --lp-paper: #ffffff;
+  --lp-paper-2: #f9f8f4;
+  --lp-ink: #1a1a19;
+  --lp-ink-2: #454540;
+  --lp-ink-3: #707069;
+  --lp-line: #dfdfd9;
+  --lp-line-2: #c9c9c2;
+  --lp-accent: #f9be08;
+  --lp-accent-hover: #efd30b;
+  --lp-accent-soft: #fff7d6;
+  --lp-accent-line: #e4bb35;
+  /* Visual states use only the supplied palette. Shape, labels and dash
+     patterns continue to distinguish states without relying on colour alone. */
+  --lp-active: #946c00;
+  --lp-active-fill: #fff2b8;
+  --lp-selected: #1a1a19;
+  --lp-selected-fill: #dfdfd9;
+  --lp-uncovered: #707069;
+  --lp-uncovered-fill: #f9f8f4;
+  --lp-cut: #946c00;
+  --lp-cut-fill: #fff2b8;
+  --lp-side-a: #946c00;
+  --lp-side-a-fill: #fff2b8;
+  --lp-side-b: #454540;
+  --lp-side-b-fill: #dfdfd9;
+  background: var(--lp-paper-2);
+  color: var(--lp-ink);
+}
+
+/* Keep motion decorative and low-contrast; the actual learning visual stays
+   inside its own panel, never underneath copy or controls. */
+.lp-hero {
+  background:
+    radial-gradient(ellipse at 88% 12%, rgba(249, 190, 8, 0.10), transparent 38%),
+    linear-gradient(180deg, #ffffff 0%, #f9f8f4 100%);
+  border-bottom-color: var(--lp-line);
+}
+.lp-hero-bg { opacity: 0.20; }
+.lp-hero-bg .lp-bg-fixture,
+.lp-hero-bg .lp-bg-matrix { opacity: 0.12; }
+.lp-hero-bg .lp-bg-mesh-edge { stroke: #c9c9c2; }
+.lp-hero-bg .lp-bg-signal { opacity: 0.18; }
+.lp-bg-node.lp-node-active .lp-node-ring,
+.lp-bg-node.lp-node-selected .lp-node-ring {
+  filter: drop-shadow(0 0 4px rgba(148, 108, 0, 0.16));
+}
+
+.lp-hero-inner {
+  max-width: 1240px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 36px;
+  padding: 52px 24px 64px;
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
+}
+.lp-hero-copy { min-width: 0; max-width: 600px; }
+.lp-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 20px;
+  color: var(--lp-ink-2);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.2;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+.lp-hero-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--lp-accent);
+}
+.lp-hero-title {
+  max-width: 12ch;
+  margin: 0 0 22px;
+  font-size: clamp(2.55rem, 5vw, 4.5rem);
+  font-weight: 760;
+  line-height: 1.035;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+.lp-hero-lede {
+  max-width: 48ch;
+  margin: 0 0 30px;
+  color: var(--lp-ink-2);
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  line-height: 1.8;
+  text-wrap: pretty;
+}
+.lp-hero-actions { align-items: center; gap: 12px; }
+.lp-hero-note {
+  max-width: 46ch;
+  margin: 22px 0 0;
+  padding-left: 14px;
+  border-left: 2px solid var(--lp-accent);
+  color: var(--lp-ink-3);
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+.lp-hero-visual { min-width: 0; width: 100%; }
+
+@media (min-width: 760px) and (max-width: 1023.98px) {
+  .lp-hero-inner { padding-top: 64px; padding-bottom: 68px; }
+  .lp-hero-copy { max-width: 660px; }
+  .lp-hero-title { max-width: 14ch; }
+}
+@media (min-width: 1024px) {
+  .lp-hero-inner {
+    grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+    gap: clamp(36px, 5vw, 72px);
+    align-items: center;
+    padding: 64px 28px 76px;
+  }
+  .lp-hero-copy { max-width: 500px; }
+}
+@media (min-width: 1280px) {
+  .lp-hero-inner { gap: 76px; padding-top: 72px; padding-bottom: 84px; }
+}
+@media (max-width: 639.98px) {
+  .lp-hero-inner {
+    padding: 38px 20px 44px;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+    gap: 28px;
+  }
+  .lp-hero-eyebrow { margin-bottom: 16px; font-size: 10.5px; }
+  .lp-hero-title { font-size: clamp(2.35rem, 11.5vw, 3.3rem); max-width: 13ch; }
+  .lp-hero-lede { margin-bottom: 24px; line-height: 1.7; }
+  .lp-hero-actions { align-items: stretch; }
+  .lp-hero-actions .lp-btn { width: 100%; }
+}
+
+/* Shorter scene panel with one clear visual focus. The step detail remains
+   available in the scroll region, rather than forcing the whole hero to grow. */
+.lp-scene {
+  --lp-scene-h: 630px;
+  --lp-scene-canvas-h: 220px;
+  height: var(--lp-scene-h);
+}
+@media (min-width: 640px) {
+  .lp-scene { --lp-scene-h: 660px; --lp-scene-canvas-h: 250px; }
+}
+@media (min-width: 1024px) {
+  .lp-scene { --lp-scene-h: 710px; --lp-scene-canvas-h: 280px; }
+  .lp-scene-panel { padding: 18px; gap: 10px; }
+}
+@media (min-width: 1280px) {
+  .lp-scene { --lp-scene-h: 720px; --lp-scene-canvas-h: 300px; }
+}
+.lp-tabs { gap: 6px; margin-bottom: 12px; }
+.lp-tab {
+  border-radius: 999px;
+  padding: 8px 13px;
+  border-color: transparent;
+  background: rgba(255, 255, 255, 0.70);
+}
+.lp-tab:hover { background: var(--lp-accent-soft); }
+.lp-tab-active {
+  color: var(--lp-ink);
+  background: var(--lp-accent-soft);
+  border-color: var(--lp-accent-line);
+  box-shadow: none;
+}
+.lp-scene-panel {
+  border-color: var(--lp-line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.97);
+  background-image: none;
+  box-shadow: 0 14px 42px rgba(26, 26, 25, 0.055);
+}
+.lp-scene-title {
+  min-height: 0;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+.lp-scene-visual {
+  border-color: #e7e7e1;
+  border-radius: 14px;
+  background: #fdfdfb;
+  box-shadow: none;
+}
+.lp-scene-caption {
+  padding-top: 10px;
+  line-height: 1.6;
+}
+.lp-scene-controls {
+  border: 0;
+  border-top: 1px solid var(--lp-line);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 10px 0 0;
+  gap: 8px;
+}
+.lp-scene-controls .lp-btn-quiet {
+  min-height: 40px;
+  padding: 8px 12px;
+}
+.lp-step-counter { color: #806000; }
+.lp-step-title { font-size: 15px; letter-spacing: -0.01em; }
+.lp-step-body { font-size: 13.5px; line-height: 1.6; }
+.lp-details { color: var(--lp-ink-2); }
+.lp-details summary { color: var(--lp-ink-2); }
+.lp-legend { gap: 9px 14px; }
+.lp-legend-item { font-size: 12px; }
+.lp-swatch { width: 13px; height: 13px; }
+
+/* Unified, quiet chart language — yellow marks the active idea; charcoal and
+   neutral grey indicate other states, backed up by shape and line treatment. */
+.lp-edge-active { stroke: var(--lp-active); }
+.lp-edge-covered { stroke: var(--lp-selected); }
+.lp-edge-uncovered { stroke: var(--lp-uncovered); }
+.lp-edge-cut { stroke: var(--lp-cut); }
+.lp-node-active .lp-node-ring {
+  fill: var(--lp-active-fill);
+  stroke: var(--lp-active);
+}
+.lp-node-selected .lp-node-ring,
+.lp-node-covered .lp-node-ring {
+  fill: var(--lp-selected-fill);
+  stroke: var(--lp-selected);
+}
+.lp-node-uncovered .lp-node-ring {
+  fill: var(--lp-uncovered-fill);
+  stroke: var(--lp-uncovered);
+}
+.lp-node-cut .lp-node-ring {
+  fill: var(--lp-cut-fill);
+  stroke: var(--lp-cut);
+}
+.lp-swatch-active { border-color: var(--lp-active); background: var(--lp-active-fill); }
+.lp-swatch-selected,
+.lp-swatch-covered { border-color: var(--lp-selected); background: var(--lp-selected-fill); }
+.lp-swatch-uncovered { border-color: var(--lp-uncovered); background: var(--lp-uncovered-fill); }
+.lp-swatch-cut { border-color: var(--lp-cut); background: var(--lp-cut-fill); }
+.lp-cell-window rect { stroke: var(--lp-active); }
+.lp-cell-accept rect { fill: var(--lp-selected-fill); stroke: var(--lp-selected); }
+.lp-cell-initial rect { fill: var(--lp-side-a-fill); stroke: var(--lp-side-a); }
+.lp-cell-head, .lp-cell-caret { fill: var(--lp-active); }
+
+/* Overall page rhythm: distinct sections, but not oversized blocks of chrome. */
+.lp-main-bg { opacity: 0.18; }
+.lp-main-glow {
+  background:
+    radial-gradient(280px 380px at 0% 16%, rgba(249, 190, 8, 0.045), transparent 72%),
+    radial-gradient(320px 420px at 100% 54%, rgba(26, 26, 25, 0.018), transparent 74%);
+}
+.lp-section {
+  max-width: 1160px;
+  padding: 70px 28px;
+}
+.lp-section-head {
+  max-width: 650px;
+  margin-bottom: 32px;
+}
+.lp-section-head h2,
+.lp-closing h2 {
+  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+  line-height: 1.14;
+  letter-spacing: -0.045em;
+}
+.lp-section-head p {
+  max-width: 62ch;
+  line-height: 1.75;
+}
+.lp-rail {
+  max-width: 1160px;
+  padding: 28px 28px 40px;
+  gap: 14px;
+}
+.lp-rail-title {
+  font-size: 11px;
+  letter-spacing: 0.10em;
+}
+.lp-rail-list { gap: 10px; }
+.lp-chip {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: var(--lp-line);
+  box-shadow: none;
+  font-size: 14px;
+}
+.lp-chip:hover {
+  border-color: var(--lp-accent-line);
+  color: var(--lp-ink);
+}
+
+/* Topic cards become calm, consistent learning choices. */
+.lp-topic-grid { gap: 22px; }
+.lp-topic-card {
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(26, 26, 25, 0.025);
+}
+.lp-topic-card:hover,
+.lp-topic-card:focus-within {
+  border-color: var(--lp-accent-line);
+  box-shadow: 0 12px 28px rgba(26, 26, 25, 0.06);
+  transform: translateY(-2px);
+}
+.lp-topic-figure {
+  padding: 18px 18px 14px;
+  background: #f9f8f4;
+}
+.lp-thumb svg { height: 152px; }
+.lp-topic-body { gap: 12px; padding: 22px; }
+.lp-topic-title { font-size: 17px; line-height: 1.35; }
+.lp-topic-desc { font-size: 14px; line-height: 1.7; }
+.lp-topic-question {
+  padding: 12px 0 0 13px;
+  border-top: 1px solid var(--lp-line);
+  border-left: 2px solid var(--lp-accent-line);
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+.lp-topic-question-label { margin-bottom: 5px; }
+.lp-topic-action { margin-top: auto; }
+
+/* The demo and all table/chart surfaces share the same low-noise frame. */
+.lp-demo-panel { gap: 16px; }
+.lp-demo-caption { max-width: 72ch; line-height: 1.75; }
+.lp-demo-frame {
+  padding: 18px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 26px rgba(26, 26, 25, 0.035);
+}
+.lp-demo-frame .trace-block { border-radius: 12px; }
+.lp-demo-frame .graph-viewport {
+  height: 300px;
+  border: 1px solid var(--lp-line);
+  background: #fdfdfb;
+  border-radius: 12px;
+}
+.lp-demo-frame .btn { border-radius: 9px; }
+.lp-demo-frame .btn:hover:not(:disabled) { color: var(--lp-ink); }
+.lp-demo-note { line-height: 1.65; }
+.lp-steptable-wrap {
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: none;
+  background: #fff;
+}
+.lp-steptable { font-size: 13px; }
+.lp-steptable th,
+.lp-steptable td { padding: 9px 11px; }
+.lp-steptable th { background: #f9f8f4; color: var(--lp-ink-2); }
+.lp-row-current { background: #fff7d6; }
+.lp-row-current td:first-child::before { color: #806000; }
+
+/* A lighter, more deliberate treatment for the learning sequence and feature list. */
+.lp-stages { gap: 24px; }
+.lp-stage {
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 16px;
+  border: 1px solid var(--lp-line);
+  border-radius: 16px;
+  padding: 22px;
+  background: rgba(255, 255, 255, 0.74);
+}
+.lp-stage-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: var(--lp-accent-soft);
+  color: var(--lp-ink);
+  font-size: 17px;
+}
+.lp-stage-title { font-size: 15.5px; line-height: 1.4; }
+.lp-stage-body { font-size: 14px; line-height: 1.7; }
+.lp-how-note {
+  margin-top: 28px;
+  padding: 20px 22px;
+  border-radius: 14px;
+  box-shadow: none;
+  line-height: 1.75;
+}
+.lp-capabilities { gap: 24px 36px; }
+.lp-capability {
+  padding: 18px 18px 0 0;
+  border-top-color: var(--lp-line-2);
+}
+.lp-capability dt { font-size: 15px; }
+.lp-capability dd { font-size: 14px; line-height: 1.75; }
+.lp-closing {
+  max-width: none;
+  margin: 0 28px;
+  padding: 64px 24px;
+  border: 1px solid var(--lp-line);
+  border-radius: 22px;
+  background: #fff;
+}
+.lp-closing-lede { font-size: 15.5px; line-height: 1.75; }
+.lp-footer {
+  margin-top: 72px;
+  padding-top: 40px;
+  padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  background: #f3f2ed;
+}
+.lp-footer-inner { max-width: 1104px; }
+.lp-footer-legal { max-width: 1104px; line-height: 1.7; }
+
+/* Keep the design comfortable on phones and tablets without horizontal spill. */
+@media (max-width: 779.98px) {
+  .lp-section { padding: 54px 20px; }
+  .lp-rail { padding: 26px 20px 36px; }
+  .lp-stage { padding: 18px; }
+  .lp-closing { margin: 0 20px; padding: 46px 20px; }
+  .lp-footer { margin-top: 52px; }
+}
+@media (max-width: 479.98px) {
+  .lp-section { padding: 46px 18px; }
+  .lp-rail { padding-left: 18px; padding-right: 18px; }
+  .lp-section-head { margin-bottom: 26px; }
+  .lp-topic-grid { gap: 16px; }
+  .lp-topic-figure { padding: 14px; }
+  .lp-thumb svg { height: 132px; }
+  .lp-topic-body { padding: 18px; }
+  .lp-demo-frame { padding: 10px; }
+  .lp-demo-frame .graph-viewport { height: 250px; }
+  .lp-scene-panel { padding: 12px; }
+  .lp-scene-controls { gap: 6px; }
+  .lp-scene-controls .lp-btn-quiet { flex: 1 1 auto; }
+  .lp-tab { min-height: 36px; padding: 7px 10px; font-size: 12px; }
+  .lp-capability { padding-right: 0; }
+  .lp-closing { margin: 0 14px; padding: 38px 18px; border-radius: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-topic-card,
+  .lp-btn,
+  .lp-chip,
+  .lp-drawer,
+  .lp-tab { transition-duration: 0.01ms !important; }
+}
+
+
+/* Floating off-white navbar */
+.lp-nav {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(860px, calc(100% - 40px));
+  z-index: 1000;
+
+  background: rgba(247, 245, 239, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(37, 37, 37, 0.08);
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(37, 37, 37, 0.08);
+}
+
+.lp-nav-inner {
+  min-height: 56px;
+  padding: 6px 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Navigation links */
+.lp-nav-links {
+  gap: 20px;
+}
+
+.lp-nav-links a,
+.lp-nav-links button {
+  color: #252525;
+  transition: color 0.2s ease;
+}
+
+.lp-nav-links a:hover,
+.lp-nav-links button:hover {
+  color: #8a6b00;
+}
+
+/* Brand logo */
+.lp-brand-robot {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.lp-brand-wordmark {
+  width: 105px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Keep the yellow CTA */
+.lp-nav-actions .lp-btn {
+  padding: 9px 15px;
+  font-size: 13px;
+}
+
+/* Mobile navbar */
+@media (max-width: 900px) {
+  .lp-nav {
+    top: 10px;
+    width: calc(100% - 24px);
+    border-radius: 22px;
+  }
+
+  .lp-nav-inner {
+    min-height: 50px;
+    padding: 5px 12px;
+  }
+}
+
+/* Keep hero content from hiding behind the fixed navbar */
+.lp-hero {
+  padding-top: 20px;
 }

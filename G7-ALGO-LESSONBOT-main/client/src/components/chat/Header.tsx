@@ -1,53 +1,51 @@
 /**
- * Compact top bar. Shows on small screens (with a menu button that opens the
- * sidebar drawer) and as a slim context bar on desktop.
- *
- * The provider badge reports whatever the health endpoint says the server is
- * running — it is a status indicator, so a hardcoded vendor name would be a
- * lie the moment the provider changes.
+ * Desktop topic context bar and compact mobile navigation header.
+ * Topic selection stays in the sidebar; learning level is available here on
+ * desktop and in the sidebar drawer on narrow screens.
  */
 import type { RefObject } from "react";
 import type { LearningLevel, TopicSummary } from "@shared/contract";
-import type { ProviderStatus } from "../../App";
+import { LEARNING_LEVELS } from "@shared/contract";
 import { Link } from "../../lib/router";
-import { IconMenu } from "../icons";
-import { providerLabel } from "./Sidebar";
-import algotutorRobot from "../../assets/AlgoTutor-robot.png";
+import { IconGraph, IconMenu } from "../icons";
+import algotutorRobot from "../../assets/algotutor-robot.png";
 
 interface HeaderProps {
   topics: TopicSummary[];
   topicId: string;
   level: LearningLevel;
-  provider: ProviderStatus;
+  onLevelChange: (level: LearningLevel) => void;
   onOpenDrawer: () => void;
   streaming: boolean;
-  /** Title of the active (or restored) conversation, when one exists. */
   conversationTitle?: string | null;
-  /** Focus target when the drawer closes (App owns the ref). */
   triggerRef?: RefObject<HTMLButtonElement>;
 }
+
+const LEVEL_LABELS: Record<LearningLevel, string> = {
+  beginner: "Beginner",
+  intermediate: "Intermediate",
+  formal: "Formal",
+};
 
 export function Header({
   topics,
   topicId,
   level,
-  provider,
+  onLevelChange,
   onOpenDrawer,
   triggerRef,
   streaming,
   conversationTitle,
 }: HeaderProps) {
-  const topic = topics.find((t) => t.slug === topicId);
-  const title = conversationTitle ?? (topic ? topic.title : "G7 Algo");
+  const topicIndex = Math.max(0, topics.findIndex((item) => item.slug === topicId));
+  const topic = topics.find((item) => item.slug === topicId);
+
   return (
     <header className="header">
-      <Link
-        to="/"
-        className="btn btn-icon header-home"
-        aria-label="AlgoTutor AI — back to the landing page"
-      >
-        <img className="header-home-logo" src={algotutorRobot} alt="" />
+      <Link to="/" className="header-home" aria-label="AlgoTutor AI — back to the landing page">
+        <img src={algotutorRobot} alt="" aria-hidden="true" />
       </Link>
+
       <button
         ref={triggerRef}
         type="button"
@@ -58,33 +56,40 @@ export function Header({
       >
         <IconMenu size={20} />
       </button>
+
       <div className="header-context">
-        <span className="header-topic" title={title}>
-          {title}
-        </span>
-        <span className="header-meta">
-          <span
-            className={`provider-badge ${provider.enabled ? "provider-ai" : "provider-curated"}`}
-            title={
-              provider.enabled
-                ? `${providerLabel(provider)} is answering this conversation.`
-                : "AI provider is off. Curated offline lessons answer every question."
-            }
-          >
-            <span className="provider-dot" aria-hidden="true" />
-            {provider.enabled ? providerLabel(provider) : "Curated"}
+        <div className="header-topic-group">
+          <span className="header-topic-icon" aria-hidden="true">
+            <IconGraph size={18} />
           </span>
-          {streaming && (
-            <span className="streaming-dot" aria-label="Generating response" />
-          )}
-          <span className="header-level" title={`Teaching level: ${level}`}>
-            {level === "beginner"
-              ? "Beginner"
-              : level === "intermediate"
-                ? "Intermediate"
-                : "Formal"}
-          </span>
-        </span>
+          <div className="header-topic-copy">
+            <span className="header-topic" title={conversationTitle ?? topic?.title ?? "AlgoTutor AI"}>
+              {topic?.title ?? "AlgoTutor AI"}
+            </span>
+            <span className="header-topic-count">
+              {topics.length > 0 ? `Topic ${topicIndex + 1} of ${topics.length}` : "Course topics"}
+            </span>
+          </div>
+          {streaming && <span className="streaming-dot" aria-label="Generating response" />}
+        </div>
+
+        <div className="header-level-controls">
+          <span className="header-level-label">Explanation level</span>
+          <div className="segmented header-segmented" role="radiogroup" aria-label="Explanation level">
+            {LEARNING_LEVELS.map((item) => (
+              <button
+                key={item}
+                type="button"
+                role="radio"
+                aria-checked={level === item}
+                className={`segment ${level === item ? "segment-active" : ""}`}
+                onClick={() => onLevelChange(item)}
+              >
+                {LEVEL_LABELS[item]}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </header>
   );

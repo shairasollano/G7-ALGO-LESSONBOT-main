@@ -18,7 +18,7 @@ import { api } from "../api/client";
 import { TraceBlock } from "../components/blocks/TraceBlock";
 import { chatHref, Link } from "../lib/router";
 import { AlgoScene } from "./AlgoScene";
-import { HeroBackdrop, HeroTicker, useHeroExample } from "./HeroExample";
+import { HeroBackdrop, useHeroExample } from "./HeroExample";
 import {
   IconArrowDown,
   IconArrowRight,
@@ -40,8 +40,8 @@ import {
 } from "./landing-copy";
 import { usePrefersReducedMotion } from "./use-motion";
 import "./landing.css";
-import algotutorRobot from "../assets/AlgoTutor-robot.png";
-import algotutorWordmark from "../assets/AlgoTutor-typography.png";
+import algotutorRobot from "../assets/algotutor-robot.png";
+import algotutorWordmark from "../assets/algotutor-wordmark.png";
 
 type CatalogStatus = "loading" | "ready" | "error";
 
@@ -209,17 +209,17 @@ function Brand({ onActivate }: { onActivate?: () => void }) {
       }}
     >
       <img
-        className="lp-brand-robot"
-        src={algotutorRobot}
-        alt=""
-        aria-hidden="true"
-      />
+  className="lp-brand-robot"
+  src={algotutorRobot}
+  alt=""
+  aria-hidden="true"
+/>
 
-      <img
-        className="lp-brand-wordmark"
-        src={algotutorWordmark}
-        alt="AlgoTutor"
-      />
+<img
+  className="lp-brand-wordmark"
+  src={algotutorWordmark}
+  alt="AlgoTutor"
+/>
     </a>
   );
 }
@@ -346,11 +346,9 @@ function Nav() {
 }
 
 /**
- * Hero: copy on the left, the animated scene player on the right. Behind both
- * sits the decorative example graph (HeroBackdrop); beside the copy sits its
- * legible half, the progress table (HeroTicker). Both draw from the same real
- * solver fixture, and both are bounded so the hero's size never depends on
- * what the animation is currently showing.
+ * Hero: concise introduction beside one focused, interactive algorithm scene.
+ * The quiet animated backdrop stays decorative; the full step-by-step result
+ * is presented inside AlgoScene, avoiding a second competing data table.
  */
 function Hero() {
   const example = useHeroExample();
@@ -360,13 +358,13 @@ function Hero() {
       <HeroBackdrop step={example.step} paused={example.paused} />
       <div className="lp-hero-inner">
         <div className="lp-hero-copy">
+          <p className="lp-hero-eyebrow">A calmer way to learn algorithms</p>
           <h1 className="lp-hero-title">
-            Understand Algorithms. See Why They Work.
+            Understand algorithms. See why they work.
           </h1>
           <p className="lp-hero-lede">
-            Explore polynomial reductions, complexity theory, approximation
-            algorithms, and randomized algorithms through clear explanations,
-            interactive visualizations, and step-by-step examples.
+            Explore reductions, complexity theory, approximation, and randomized
+            algorithms through clear explanations and interactive, step-by-step examples.
           </p>
           <div className="lp-hero-actions">
             <Link className="lp-btn lp-btn-primary lp-btn-lg" to="/chat">
@@ -382,18 +380,9 @@ function Hero() {
             </a>
           </div>
           <p className="lp-hero-note">
-            Four deterministic solvers, three explanation depths, and no
-            account. Computed results come from the app's own code, not from a
-            language model.
+            Interactive examples use the app’s own deterministic solvers, so
+            computed results are not guessed by a language model.
           </p>
-          <HeroTicker
-            step={example.step}
-            phase={example.phase}
-            paused={example.paused}
-            reducedMotion={example.reducedMotion}
-            onTogglePause={example.togglePause}
-            onRestart={example.restart}
-          />
         </div>
         <div className="lp-hero-visual">
           <AlgoScene />
