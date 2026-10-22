@@ -40,8 +40,8 @@ import {
 } from "./landing-copy";
 import { usePrefersReducedMotion } from "./use-motion";
 import "./landing.css";
-import algotutorRobot from "./assets/algotutor-robot.png";
-import algotutorWordmark from "./assets/algotutor-wordmark.png";
+import algotutorRobot from "../assets/algotutor-robot.png";
+import algotutorWordmark from "../assets/algotutor-wordmark.png";
 
 type CatalogStatus = "loading" | "ready" | "error";
 
@@ -208,10 +208,18 @@ function Brand({ onActivate }: { onActivate?: () => void }) {
         window.scrollTo({ top: 0, behavior: "auto" });
       }}
     >
-      <span className="lp-brand-mark" aria-hidden="true">
-        λ
-      </span>
-      <span className="lp-brand-name">G7 Algo</span>
+      <img
+  className="lp-brand-robot"
+  src={algotutorRobot}
+  alt=""
+  aria-hidden="true"
+/>
+
+<img
+  className="lp-brand-wordmark"
+  src={algotutorWordmark}
+  alt="AlgoTutor"
+/>
     </a>
   );
 }

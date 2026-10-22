@@ -170,7 +170,7 @@ body {
   background: transparent;
   padding: 8px 10px;
   border-radius: var(--radius-sm);
-  font-size: 14px;
+  font-size: 12px;
   color: var(--text);
   cursor: pointer;
   min-height: 40px;
@@ -2431,7 +2431,7 @@ body { color: var(--text); background: var(--bg); }
 /* Section heading */
 .sidebar-topics-heading {
   min-width: 0;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 650;
   line-height: 1.4;
   color: var(--text-muted);
@@ -2440,7 +2440,7 @@ body { color: var(--text); background: var(--bg); }
 /* Topic count remains aligned to the far right */
 .sidebar-topics-summary .sidebar-topic-count {
   justify-self: end;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 400;
   line-height: 1.4;
   color: var(--text-muted);
@@ -2471,7 +2471,7 @@ body { color: var(--text); background: var(--bg); }
 
 /* Bold the selected topic only */
 .sidebar-topic-active .sidebar-topic-title {
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 700;
   line-height: 1.35;
 }
@@ -2480,7 +2480,7 @@ body { color: var(--text); background: var(--bg); }
 .sidebar-topic-description {
   display: block;
   margin-top: 4px;
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 1.4;
   color: #946200;
@@ -2612,4 +2612,46 @@ samp {
 .composer-input {
   font-size: 14px;
   font-weight: 400;
+}
+/* Course topics header alignment */
+.sidebar-topics-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Hide the browser's default disclosure arrow */
+.sidebar-topics-summary::-webkit-details-marker {
+  display: none;
+}
+
+.sidebar-topics-summary::marker {
+  content: "";
+}
+
+/* One consistent chevron shape */
+.sidebar-topics-chevron {
+  display: inline-block;
+  flex: 0 0 7px;
+  width: 7px;
+  height: 7px;
+  box-sizing: border-box;
+
+  border-right: 1.8px solid currentColor;
+  border-bottom: 1.8px solid currentColor;
+
+  transform: rotate(-45deg);
+  transition: transform 0.2s ease;
+}
+
+/* Rotate the same arrow downward when expanded */
+.sidebar-topics-section[open] .sidebar-topics-chevron {
+  transform: rotate(45deg);
+}
+
+/* Keep the topic count aligned to the right */
+.sidebar-topics-count {
+  margin-left: auto;
 }

@@ -188,12 +188,7 @@ export function Sidebar({
   open
 >
             <summary className="sidebar-topics-summary">
-  <span
-    className="sidebar-topics-chevron"
-    aria-hidden="true"
-  >
-    ⌄
-  </span>
+  <span className="sidebar-topics-chevron" aria-hidden="true" />
 
   <span className="sidebar-topics-heading">
     Course topics
