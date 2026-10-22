@@ -139,7 +139,7 @@ body {
 .sidebar-label {
   font-size: 11px;
   font-weight: 700;
-  text-transform: uppercase;
+
   letter-spacing: 0.06em;
   color: var(--text-muted);
   margin: 6px 0 4px;
@@ -2431,8 +2431,8 @@ body { color: var(--text); background: var(--bg); }
 /* Section heading */
 .sidebar-topics-heading {
   min-width: 0;
-  font-size: 11px;
-  font-weight: 650;
+  font-size: 14px;
+  font-weight: 800;
   line-height: 1.4;
   color: var(--text-muted);
 }
@@ -2570,8 +2570,8 @@ samp {
 /* Sidebar section headings */
 .sidebar-topics-heading,
 .sidebar-label {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
 }
 
 /* Topic titles */
