@@ -5,6 +5,7 @@
     "moduleResolution": "NodeNext",
     "lib": ["ES2022"],
     "outDir": "dist",
+    "rootDir": "..",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -13,7 +14,6 @@
     "declaration": false,
     "sourceMap": false,
     "types": ["node"],
-    "baseUrl": ".",
     "paths": {
       "@shared/*": ["../shared/*"]
     }

@@ -20,9 +20,11 @@ interface ComposerProps {
   draft?: string | null;
   /** id of the element describing the composer, for aria-describedby. */
   hintId?: string;
+  /** Hide the solver accuracy note when the welcome screen renders its own footer note. */
+  showAccuracyNote?: boolean;
 }
 
-export function Composer({ onSend, onStop, streaming, placeholder, draft = null, hintId }: ComposerProps) {
+export function Composer({ onSend, onStop, streaming, placeholder, draft = null, hintId, showAccuracyNote = true }: ComposerProps) {
   const [value, setValue] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -97,13 +99,18 @@ export function Composer({ onSend, onStop, streaming, placeholder, draft = null,
               title="Send message"
             >
               <IconArrowUp />
-              <span className="send-label">Send</span>
+              <span className="send-label"></span>
             </button>
           )}
         </div>
         <p className="composer-hint" id={hintId}>
-          <span className="hint-desktop">Enter to send · Shift+Enter for a new line · </span>
-          Answers are computed by deterministic solvers; always check formal claims against your course notes.
+          <span className="hint-desktop">Enter to send · Shift+Enter for a new line</span>
+          {showAccuracyNote && (
+            <>
+              <span className="hint-separator" aria-hidden="true"> · </span>
+              Answers are computed by deterministic solvers; always check formal claims against your course notes.
+            </>
+          )}
         </p>
       </div>
     </div>

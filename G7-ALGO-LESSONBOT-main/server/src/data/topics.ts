@@ -13,7 +13,7 @@ export const topics: TopicDetail[] = [
     slug: "polynomial-reductions",
     title: "Foundations of Polynomial Reductions",
     description:
-      "What it means to transform one problem into another, and why the transformation — not the solving — is the point.",
+      "Translating one problem into another",
     objectives: [
       "Define a decision problem, an instance, and a YES/NO answer.",
       "Explain what a polynomial-time transformation between problems is.",
@@ -101,7 +101,7 @@ export const topics: TopicDetail[] = [
     slug: "formal-reductions",
     title: "Formal Polynomial-Time Reductions",
     description:
-      "The formal definition A ≤p B, the correctness condition x ∈ A ⟺ f(x) ∈ B, and how reductions establish NP-hardness.",
+      "Definitions, correctness, and proof",
     objectives: [
       "State the formal definition of A ≤p B with the transformation f.",
       "Prove correctness of a reduction in both directions of the iff.",
@@ -187,7 +187,7 @@ export const topics: TopicDetail[] = [
     slug: "cook-levin",
     title: "The Cook–Levin Theorem",
     description:
-      "Why SAT is NP-complete: encoding an accepting computation as a Boolean formula, with a bounded tableau illustration.",
+      "How computation becomes a Boolean formula",
     objectives: [
       "Define SAT, NP, NP-hardness, and NP-completeness before using them.",
       "Explain the high-level idea of the Cook–Levin construction.",
@@ -282,7 +282,7 @@ export const topics: TopicDetail[] = [
     slug: "approximation-algorithms",
     title: "Approximation Algorithms",
     description:
-      "Optimization problems, approximation ratios, and the 2-approximation algorithm for Vertex Cover with a full trace.",
+      "Finding near-optimal solutions",
     objectives: [
       "Distinguish optimization problems from decision problems.",
       "Define feasible solution, objective value, and approximation ratio.",
@@ -369,7 +369,7 @@ export const topics: TopicDetail[] = [
     slug: "randomized-algorithms",
     title: "Randomized Algorithms",
     description:
-      "Randomized choices, expected running time, Monte Carlo vs Las Vegas, and a seeded randomized Max-Cut demo.",
+      "Using randomness to solve problems",
     objectives: [
       "Explain how randomness can be part of an algorithm's logic.",
       "Distinguish Monte Carlo algorithms (bounded time, bounded error) from Las Vegas algorithms (random time, always correct).",
