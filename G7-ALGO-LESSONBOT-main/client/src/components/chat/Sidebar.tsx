@@ -12,7 +12,7 @@ import type { ProviderStatus } from "../../App";
 import { Link } from "../../lib/router";
 import type { StoredConversation } from "../../lib/conversations";
 import { STORAGE_NOTICE } from "../../lib/conversations";
-import algotutorRobot from "../../assets/algotutor-robot.png";
+import algotutorRobot from "../../assets/AlgoTutor-robot.png";
 import algotutorWordmark from "../../assets/algotutor-wordmark.png";
 import {
   IconCheck,

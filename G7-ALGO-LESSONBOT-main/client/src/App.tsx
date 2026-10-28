@@ -13,7 +13,7 @@ import { TUTOR_ACTIONS } from "@shared/contract";
 import { api, friendlyError, streamChat } from "./api/client";
 import { ChatThread } from "./components/chat/ChatThread";
 import { Composer } from "./components/chat/Composer";
-import algotutorRobot from "./assets/algotutor-robot.png";
+import algotutorRobot from "./assets/AlgoTutor-robot.png";
 import { Header } from "./components/chat/Header";
 import { Sidebar } from "./components/chat/Sidebar";
 import { PrivacyNotice } from "./components/chat/PrivacyNotice";

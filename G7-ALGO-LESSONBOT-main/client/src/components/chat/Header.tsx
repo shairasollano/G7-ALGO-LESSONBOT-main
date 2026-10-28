@@ -8,7 +8,7 @@ import type { LearningLevel, TopicSummary } from "@shared/contract";
 import { LEARNING_LEVELS } from "@shared/contract";
 import { Link } from "../../lib/router";
 import { IconGraph, IconMenu } from "../icons";
-import algotutorRobot from "../../assets/algotutor-robot.png";
+import algotutorRobot from "../../assets/AlgoTutor-robot.png";
 
 interface HeaderProps {
   topics: TopicSummary[];

@@ -40,7 +40,7 @@ import {
 } from "./landing-copy";
 import { usePrefersReducedMotion } from "./use-motion";
 import "./landing.css";
-import algotutorRobot from "../assets/algotutor-robot.png";
+import algotutorRobot from "../assets/AlgoTutor-robot.png";
 import algotutorWordmark from "../assets/algotutor-wordmark.png";
 
 type CatalogStatus = "loading" | "ready" | "error";
