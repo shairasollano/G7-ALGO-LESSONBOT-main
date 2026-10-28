@@ -12,7 +12,7 @@
 import { useState, type ReactElement } from "react";
 import type { Message } from "../../App";
 import { BlockRenderer } from "../blocks/BlockRenderer";
-import algotutorRobot from "../../assets/algotutor-robot.png";
+import algotutorRobot from "../../assets/AlgoTutor-robot.png";
 import { TextBlock } from "../blocks/TextBlock";
 import { TUTOR_ACTIONS } from "@shared/contract";
 import {
